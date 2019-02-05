@@ -1,0 +1,79 @@
+body {
+    background: #000 url('earth.jpg') no-repeat;
+    background-size: cover;
+}
+
+section {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    padding: 2%;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    font: 5em "Georgia";
+}
+
+section #lp_form {
+    font-size: 0.5em;
+    border-top: solid 1px white;
+    padding-top: 0.5em;
+}
+
+section #lp_form #lp_account_setup {
+    width: 28em;
+    word-wrap: break-word;
+    font-size: 0.5em;
+}
+
+section #lp_form #lp_account_setup a{
+    font-size: 1.0em;
+}
+
+section #lp_form #lp_account_setup code textarea
+{
+    width: 90%;
+}
+
+section #lp_form #lp_account_setup #lp_account_setup_description {
+    display: none;
+}
+
+section .feature {
+    color: rgb(231, 201, 0);
+}
+
+section button {
+    background: rgb(210, 88, 3);
+    color: #fff;
+    padding: 0.5em;
+    font-size: 0.8em;
+    cursor: pointer;
+}
+
+footer {
+    position: fixed;
+    bottom: 5%;
+    color: #fff;
+    font-size: 0.8em;
+}
+
+footer {
+    right: 5%;
+}
+
+footer .credit {
+    padding: 0.5em;
+}
+
+a {
+    color: #fff;
+}
+
+@media only screen and (max-width: 768px) {
+    section {
+        font-size: 2em;
+    }
+    footer {
+        opacity: 0.5;
+    }
+}
