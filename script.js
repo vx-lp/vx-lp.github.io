@@ -36,7 +36,6 @@ else {
             }
         }
     });
-}
 
 $('#lp_lnk_setup').click(function () {
     var isDescriptionDisplay = $('#lp_account_setup_description').css('display') === 'block';
