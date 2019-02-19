@@ -21,26 +21,8 @@ else {
         var url = "https://exampleauth.cloud.lprnd.net:1980";
         var site = $("#lp_account").val();
         var username = $("#lp_username").val();
-        var href;
-
-        $.ajax({
-            url: url + '/login',
-            contentType: "application/json",
-            data: {
-                username: username
-            },
-            success: function () {
-                $.ajax(url + "/generateSsoKey?rt=json&username=" + username, {
-                    type: 'get',
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        console.error("Failed to generate SSO Key", textStatus, errorThrown);
-                    },
-                    success: function () {
-                        href = updateQueryStringParameter(window.location.href, "site", site);
-                        window.location.href = updateQueryStringParameter(href, "username", username);
-                    }
-                });
-            }
+        var href = updateQueryStringParameter(window.location.href, "site", site);
+        window.location.href = updateQueryStringParameter(href, "username", username);
         });
 
         function updateQueryStringParameter(uri, key, value) {
