@@ -18,7 +18,6 @@ if (site && username) {
 else {
     $("#lp_form").submit(function (e) {
         e.preventDefault();
-        var url = "https://exampleauth.cloud.lprnd.net:1980";
         var site = $("#lp_account").val();
         var username = $("#lp_username").val();
         var href = updateQueryStringParameter(window.location.href, "site", site);
