@@ -14,6 +14,10 @@ if (site && username) {
     window.LPJsMethodName = function (callback) {
         callback(username);
     };
+    
+    LPGetAuthenticationToken = function(callback){
+        callback(username);
+    }
 }
 else {
     $("#lp_form").submit(function (e) {
