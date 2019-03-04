@@ -8,16 +8,24 @@ if (site && username) {
     $("#lp_username").val(username);
 
     $("#lp_btn_login").hide();
-
-    lpTag.sdes.push({"type": "ctmrinfo", "info": {customerId: "lpTest" + username}});
-
-    window.LPJsMethodName = function (callback) {
-        callback(username);
-    };
-    
-    LPGetAuthenticationToken = function(callback){
-        callback(username);
-    }
+	
+	if(username){
+		lpTag.identities = [];
+		lpTag.identities.push(identityFn);
+		var usernameResult = "lpTest" + username;
+		function identityFn(callback) {
+			  callback({
+				  iss: "LivePerson",
+				  acr: "loa1",
+				  tkn: username
+			  });
+		}
+		// lpTag.sdes.push({"type": "ctmrinfo", "info": {customerId: usernameResult}});
+	}
+	
+	window.LPJsMethodName = function (callback) {
+		callback(username);
+	};
 }
 else {
     $("#lp_form").submit(function (e) {
