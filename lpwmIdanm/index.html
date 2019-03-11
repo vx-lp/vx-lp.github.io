@@ -1,1 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="user-scalable=0, width=device-width, initial-scale=1.0,  minimum-scale=1.0, maximum-scale=1.0">
+    <title>Welcome to the Web Messaging world</title>
+    <link rel="stylesheet" href="../style.css">
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script>
+        function getURLParams(search) {
+            var queryParams = {}, queryArray, singleQuery;
+            queryArray = search.substr(1).split("&");
+            for (var i = 0; i < queryArray.length; i++) {
+                if (queryArray[i].indexOf("=") > -0) {
+                    singleQuery = queryArray[i].split("=");
+                    if (singleQuery.length == 2) {
+                        queryParams[decodeURIComponent(singleQuery[0])] = decodeURIComponent(singleQuery[1]);
+                    }
+                }
+            }
+            return queryParams;
+        }
 
+        var site = getURLParams(window.location.search).site || "";
+        var username = getURLParams(window.location.search).username || "";
+    </script>
+    
+    <script language="javascript">
+<!-- BEGIN LivePerson Monitor. -->
+window.lpTag=window.lpTag||{},"undefined"==typeof window.lpTag._tagCount?(window.lpTag={site:site||"",section:lpTag.section||"",tagletSection:lpTag.tagletSection||null,autoStart:lpTag.autoStart!==!1,ovr:lpTag.ovr||{domain: 'lptag.liveperson.net', tagjs: 'lptag.liveperson.net'},_v:"1.7.0",_tagCount:1,protocol:"https:",events:{bind:function(t,e,i){lpTag.defer(function(){lpTag.events.bind(t,e,i)},0)},trigger:function(t,e,i){lpTag.defer(function(){lpTag.events.trigger(t,e,i)},1)}},defer:function(t,e){0==e?(this._defB=this._defB||[],this._defB.push(t)):1==e?(this._defT=this._defT||[],this._defT.push(t)):(this._defL=this._defL||[],this._defL.push(t))},load:function(t,e,i){var n=this;setTimeout(function(){n._load(t,e,i)},0)},_load:function(t,e,i){var n=t;t||(n=this.protocol+"//"+(this.ovr&&this.ovr.domain?this.ovr.domain:"lptag.liveperson.net")+"/tag/tag.js?site="+this.site);var a=document.createElement("script");a.setAttribute("charset",e?e:"UTF-8"),i&&a.setAttribute("id",i),a.setAttribute("src",n),document.getElementsByTagName("head").item(0).appendChild(a)},init:function(){this._timing=this._timing||{},this._timing.start=(new Date).getTime();var t=this;window.attachEvent?window.attachEvent("onload",function(){t._domReady("domReady")}):(window.addEventListener("DOMContentLoaded",function(){t._domReady("contReady")},!1),window.addEventListener("load",function(){t._domReady("domReady")},!1)),"undefined"==typeof window._lptStop&&this.load()},start:function(){this.autoStart=!0},_domReady:function(t){this.isDom||(this.isDom=!0,this.events.trigger("LPT","DOM_READY",{t:t})),this._timing[t]=(new Date).getTime()},vars:lpTag.vars||[],dbs:lpTag.dbs||[],ctn:lpTag.ctn||[],sdes:lpTag.sdes||[],ev:lpTag.ev||[]},lpTag.init()):window.lpTag._tagCount+=1;
+<!-- END LivePerson Monitor. -->
+    </script>
+</head>
+<body>
+<section>
+    <div class="title">Welcome to the</div>
+    <div class="title">World of</div>
+    <div class="feature">Web Messaging</div>
+    <form id="lp_form">
+        <p>
+            QA Account: <input id="lp_account" required>
+        </p>
+
+        <p>
+            Username: <input id="lp_username" required>
+        </p>
+
+        <p>
+            <button id="lp_btn_login" type="submit">Login</button>
+        </p>
+
+        <div id="lp_account_setup">
+            <a id="lp_lnk_setup" href="javascript:void(0)" onclick="">
+                How do I set up my account?
+            </a>
+
+            <div id="lp_account_setup_description">
+                <p>
+                    The following configuration is the default in data sources authentication server configuration. It
+                    can
+                    be changed if needed:</p>
+                <code>
+                    <b>Authentication
+                        endpoint:</b><br/><textarea>https://vx-lp.github.io/lpwm/auth.html</textarea><br/><br/>
+                    <b>Token endpoint:</b><br/>
+                    <textarea>https://exampleauth.cloud.lprnd.net/authenticate</textarea>
+                    <br/><br/>
+                    <b>JWT public key:</b><br/><textarea rows="11">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA/lnYC8lHMdEJz74m2WHrK8ndDE3LDto1xZ8HlyOwLWZWkvy71t43zzyMD1cpDfsymv6fSZSfP1NkwF6k9eTWRMYaK0TVivmAXdL4GoO/87XpPiEPn/lxICWL4VTJN/ju1by+h4qVlcpevJic4ZEK5PXF1vhHqlawPcm/IsWRcYAkFb/Mk84d+i7+OQ7NK0ouqb1T57ijUUGTQEqpzLLoTWZ7wjlWnyteuHx2OtRwskfH/3U7A7GP9STFZDC0yyDh7bj9DSuI4ScQWhmXMRy9OT/vxvJBf+pNrlNqto+dxNwJtSPKUQ0cnugdiI2mzw40HRtyQxzQONyuttdEMzMX6wIDAQAB/lnYC8lHMdEJz74m2WHrK8ndDE3LDto1xZ8HlyOwLWZWkvy71t43zzyMD1cpDfsymv6fSZSfP1NkwF6k9eTWRMYaK0TVivmAXdL4GoO/87XpPiEPn/lxICWL4VTJN/ju1by+h4qVlcpevJic4ZEK5PXF1vhHqlawPcm/IsWRcYAkFb/Mk84d+i7+OQ7NK0ouqb1T57ijUUGTQEqpzLLoTWZ7wjlWnyteuHx2OtRwskfH/3U7A7GP9STFZDC0yyDh7bj9DSuI4ScQWhmXMRy9OT/vxvJBf+pNrlNqto+dxNwJtSPKUQ0cnugdiI2mzw40HRtyQxzQONyuttdEMzMX6wIDAQAB</textarea><br/><br/>
+                    <b>JS method name:</b><br/><textarea>LPJsMethodName</textarea><br/><br/>
+                    <b>JS context:</b><br/><textarea>LPJsContext</textarea><br/>
+                </code>
+            </div>
+        </div>
+    </form>
+</section>
+<footer>
+    <img src="../liveperson_logo.png">
+
+    <div class="credit" about='https://farm8.static.flickr.com/7123/7663247816_4ef6c4d123_m.jpg'>&quot;<a
+            href='https://www.flickr.com/photos/bethscupham/7663247816/' target='_blank'>earth</a>&quot;&nbsp;(<a
+            rel='license' href='https://creativecommons.org/licenses/by/2.0/' target='_blank'>CC BY 2.0</a>)&nbsp;by&nbsp;<a
+            href='https://www.flickr.com/people/bethscupham/' target='_blank'>&nbsp;</a><a
+            xmlns:cc='http://creativecommons.org/ns#' rel='cc:attributionURL' property='cc:attributionName'
+            href='https://www.flickr.com/people/bethscupham/' target='_blank'>Dreaming in the deep south</a><a
+            href='http://www.imagecodr.org/' target='_blank'>&nbsp;</a></div>
+</footer>
+
+<script src="../script.js"></script>
+
+</body>
+</html>
