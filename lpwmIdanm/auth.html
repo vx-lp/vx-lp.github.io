@@ -26,7 +26,7 @@
                 visitorName = queryParams.client_id
             }
 //            window.location.href = queryParams.redirect_uri + "&code=" + visitorName;
-            window.location.href = queryParams.redirect_uri + (queryParams.redirect_uri.includes('?') ? '&' : '?') + "code=" + visitorName;
+            window.location.href = queryParams.redirect_uri + window.location.search + "&code=" + visitorName+"&lpDebug=2";
         }
 
     </script>
