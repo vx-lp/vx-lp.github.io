@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+        function getURLParams(search) {
+            var queryParams = {}, queryArray, singleQuery;
+            queryArray = search.substr(1).split("&");
+            for (var i = 0; i < queryArray.length; i++) {
+                if (queryArray[i].indexOf("=") > -0) {
+                    singleQuery = queryArray[i].split("=");
+                    if (singleQuery.length == 2) {
+                        queryParams[decodeURIComponent(singleQuery[0])] = decodeURIComponent(singleQuery[1]);
+                    }
+                }
+            }
+            return queryParams;
+        }
+
+        window.doLogIn = function() {
+            var visitorName = document.getElementById("visitorNameForUMSAuth").value;
+
+            var queryParams = getURLParams(window.location.search);
+            if(!visitorName) {
+                visitorName = queryParams.client_id
+            }
+//            window.location.href = queryParams.redirect_uri + "&code=" + visitorName;
+            window.location.href = queryParams.redirect_uri + (queryParams.redirect_uri.includes('?') ? '&' : '?') + "code=" + visitorName;
+        }
+
+    </script>
+</head>
+<body>
+Visitor name for authentication: <input id="visitorNameForUMSAuth" type="text">
+<button id="authButton" style="font-size: 15px;" onclick="doLogIn()">Login!</button>
+</body>
+</html>
