@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title></title>
@@ -18,23 +19,48 @@
             return queryParams;
         }
 
-        window.doLogIn = function() {
+        function _getAccountIdFromUnifiedConfig(params) {
+            var state = params.state;
+            var redirectURI = params.redirect_uri;
+            if (state) {
+                state = JSON.parse(state);
+                if (state.lpUnifiedWindowConfig) {
+                    return state.lpUnifiedWindowConfig.accountId;
+                }
+            }
+            else if (redirectURI) {
+                redirectURI = decodeURIComponent(redirectURI);
+                var search = redirectURI.split('?');
+                if (search.length > 0) {
+                    var urlParams = getURLParams('?' + search[1]);
+                    if (urlParams.lpUnifiedWindowConfig) {
+                        var conf = JSON.parse(urlParams.lpUnifiedWindowConfig);
+                        return (conf && conf.accountId) || '';
+                    }
+                }
+            }
+            return '';
+        }
+
+        window.doLogIn = function () {
             var visitorName = document.getElementById("visitorNameForUMSAuth").value;
 
             var queryParams = getURLParams(window.location.search);
-            if(!visitorName) {
+            if (!visitorName) {
                 visitorName = queryParams.client_id
             }
-              var hrefUrl=queryParams.redirect_uri + window.location.search + "&code=" + visitorName+"&accountid=le43253670";
-              window.location.href = hrefUrl;
-//            window.location.href = queryParams.redirect_uri + (queryParams.redirect_uri.includes('?') ? '&' : '?') + "code=" + visitorName;
-//            window.location.href = queryParams.redirect_uri + "&code=" + visitorName;
+            var state = '&state=' + queryParams.state
+            var accountId = '&accountId=' + _getAccountIdFromUnifiedConfig(queryParams)
+            
+            window.location.href = queryParams.redirect_uri + (queryParams.redirect_uri.includes('?') ? '&' : '?') + "code=" + visitorName + "&lpDebug=2" + state + accountId;
         }
 
     </script>
 </head>
+
 <body>
-Visitor name for authentication: <input id="visitorNameForUMSAuth" type="text">
-<button id="authButton" style="font-size: 15px;" onclick="doLogIn()">Login!</button>
+    Visitor name for authentication: <input id="visitorNameForUMSAuth" type="text">
+    <button id="authButton" style="font-size: 15px;" onclick="doLogIn()">Login!</button>
 </body>
+
 </html>
