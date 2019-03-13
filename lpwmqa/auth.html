@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,7 +19,6 @@
             }
             return queryParams;
         }
-
         function _getAccountIdFromUnifiedConfig(params) {
             var state = params.state;
             var redirectURI = params.redirect_uri;
@@ -41,20 +41,22 @@
             }
             return '';
         }
-
         window.doLogIn = function () {
-            var visitorName = document.getElementById("visitorNameForUMSAuth").value;
-
-            var queryParams = getURLParams(window.location.search);
-            if (!visitorName) {
-                visitorName = queryParams.client_id
-            }
-            var state = '&state=' + queryParams.state
-            var accountId = '&accountId=' + _getAccountIdFromUnifiedConfig(queryParams)
-            
-            window.location.href = queryParams.redirect_uri + (queryParams.redirect_uri.includes('?') ? '&' : '?') + "code=" + visitorName + "&lpDebug=2" + state + accountId;
+        var visitorName = document.getElementById("visitorNameForUMSAuth").value;
+        var queryParams = getURLParams(window.location.search);
+        if (!visitorName) {
+            visitorName = queryParams.client_id
         }
-
+        var state = '';
+        var accountId = '';
+        if(queryParams.state){
+            state = '&state=' + queryParams.state;
+        }
+        if(_getAccountIdFromUnifiedConfig(queryParams)){
+            var accountId = '&accountId=' + _getAccountIdFromUnifiedConfig(queryParams)
+        }
+        window.location.href = queryParams.redirect_uri + (queryParams.redirect_uri.includes('?') ? '&' : '?') + "code=" + visitorName + "&lpDebug=2" + state + accountId;
+    }
     </script>
 </head>
 
