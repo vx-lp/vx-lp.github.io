@@ -10,7 +10,21 @@ if (site && username) {
     $("#lp_btn_login").hide();
 
     lpTag.sdes.push({"type": "ctmrinfo", "info": {customerId: "lpTest" + username}});
-
+    
+    if(username && env && env === "ALPHA"){
+		lpTag.identities = [];
+		lpTag.identities.push(identityFn);
+		var usernameResult = username;
+		function identityFn(callback) {
+			  callback({
+				  iss: "LivePerson",
+				  acr: "loa1",
+				  tkn: usernameResult
+			  });
+		}
+		lpTag.sdes.push({"type": "ctmrinfo", "info": {customerId: usernameResult}});
+    }
+    
     window.LPJsMethodName = function (callback) {
         callback(username);
     };
