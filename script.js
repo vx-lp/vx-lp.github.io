@@ -8,8 +8,6 @@ if (site && username) {
     $("#lp_username").val(username);
 
     $("#lp_btn_login").hide();
-
-    lpTag.sdes.push({"type": "ctmrinfo", "info": {customerId: "lpTest" + username}});
     
     if(username && env && env === "ALPHA"){
 		lpTag.identities = [];
