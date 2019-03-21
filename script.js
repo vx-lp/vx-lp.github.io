@@ -9,22 +9,17 @@ if (site && username) {
 
     $("#lp_btn_login").hide();
     
-    if(env && env === "ALPHA"){
-		lpTag.identities = [];
-		lpTag.identities.push(identityFn);
-		var usernameResult = "lpTest" + username;
-		function identityFn(callback) {
-			  callback({
-				  iss: "LivePerson",
-				  acr: "loa1",
-				  sub: usernameResult
-			  });
-		}
-		lpTag.sdes.push({"type": "ctmrinfo", "info": {customerId: usernameResult}});
-    }
-    else{
-	lpTag.sdes.push({"type": "ctmrinfo", "info": {customerId: "lpTest" + username}});
-    }
+    	lpTag.identities = [];
+	lpTag.identities.push(identityFn);
+	var usernameResult = "lpTest" + username;
+	function identityFn(callback) {
+		  callback({
+			  iss: "LivePerson",
+			  acr: "loa1",
+			  sub: usernameResult
+		  });
+	}
+	lpTag.sdes.push({"type": "ctmrinfo", "info": {customerId: usernameResult}});
     
     window.LPJsMethodName = function (callback) {
         callback(username);
