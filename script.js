@@ -11,12 +11,12 @@ if (site && username) {
     
     	lpTag.identities = [];
 	lpTag.identities.push(identityFn);
-	var usernameResult = username;
+	var usernameResult = "lpTest" + username;
 	function identityFn(callback) {
 		  callback({
 			  iss: "LivePerson",
 			  acr: "loa1",
-			  tkn: usernameResult
+			  sub: usernameResult
 		  });
 	}
 	lpTag.sdes.push({"type": "ctmrinfo", "info": {customerId: usernameResult}});
