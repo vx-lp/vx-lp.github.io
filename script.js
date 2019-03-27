@@ -22,11 +22,11 @@ if (site && username) {
 	lpTag.sdes.push({"type": "ctmrinfo", "info": {customerId: usernameResult}});
     
     window.LPJsMethodName = function (callback) {
-        callback(username);
+        callback(usernameResult);
     };
 
     LPGetAuthenticationToken = function(callback){
-        callback(username);
+        callback(usernameResult);
     }
 }
 else {
