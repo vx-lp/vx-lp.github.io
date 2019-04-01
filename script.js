@@ -11,7 +11,7 @@ if (site && username) {
     
     	lpTag.identities = [];
 	lpTag.identities.push(identityFn);
-	var usernameResult = "lpTest" + username;
+	var usernameResult = username;
 	function identityFn(callback) {
 		  callback({
 			  iss: "LivePerson",
