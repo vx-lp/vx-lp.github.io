@@ -1,0 +1,214 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="user-scalable=0, width=device-width, initial-scale=1.0,  minimum-scale=1.0, maximum-scale=1.0">
+    <title>Web Messaging</title>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oswald&display=swap" rel="stylesheet">
+
+    <script>
+        var env = "ALPHA";
+        function getURLParams(search) {
+            var queryParams = {}, queryArray, singleQuery;
+            queryArray = search.substr(1).split("&");
+            for (var i = 0; i < queryArray.length; i++) {
+                if (queryArray[i].indexOf("=") > -0) {
+                    singleQuery = queryArray[i].split("=");
+                    if (singleQuery.length == 2) {
+                        queryParams[decodeURIComponent(singleQuery[0])] = decodeURIComponent(singleQuery[1]);
+                    }
+                }
+            }
+            return queryParams;
+        }
+
+        var site = getURLParams(window.location.search).site || "";
+        var username = getURLParams(window.location.search).username || "";
+
+        function copyToClipboard() {
+            /* Get the text field */
+            new ClipboardJS('.copy', {
+                container: document.getElementById('modal')
+            });
+        }
+    </script>
+
+    <script language="javascript">
+<!-- BEGIN LivePerson Monitor. -->
+window.lpTag=window.lpTag||{},"undefined"==typeof window.lpTag._tagCount?(window.lpTag={site:site||"",section:lpTag.section||"",tagletSection:lpTag.tagletSection||null,autoStart:lpTag.autoStart!==!1,ovr:lpTag.ovr||{domain: 'lptag-a.liveperson.net', tagjs: 'lptag-a.liveperson.net'},_v:"1.7.0",_tagCount:1,protocol:"https:",events:{bind:function(t,e,i){lpTag.defer(function(){lpTag.events.bind(t,e,i)},0)},trigger:function(t,e,i){lpTag.defer(function(){lpTag.events.trigger(t,e,i)},1)}},defer:function(t,e){0==e?(this._defB=this._defB||[],this._defB.push(t)):1==e?(this._defT=this._defT||[],this._defT.push(t)):(this._defL=this._defL||[],this._defL.push(t))},load:function(t,e,i){var n=this;setTimeout(function(){n._load(t,e,i)},0)},_load:function(t,e,i){var n=t;t||(n=this.protocol+"//"+(this.ovr&&this.ovr.domain?this.ovr.domain:"lptag.liveperson.net")+"/tag/tag.js?site="+this.site);var a=document.createElement("script");a.setAttribute("charset",e?e:"UTF-8"),i&&a.setAttribute("id",i),a.setAttribute("src",n),document.getElementsByTagName("head").item(0).appendChild(a)},init:function(){this._timing=this._timing||{},this._timing.start=(new Date).getTime();var t=this;window.attachEvent?window.attachEvent("onload",function(){t._domReady("domReady")}):(window.addEventListener("DOMContentLoaded",function(){t._domReady("contReady")},!1),window.addEventListener("load",function(){t._domReady("domReady")},!1)),"undefined"==typeof window._lptStop&&this.load()},start:function(){this.autoStart=!0},_domReady:function(t){this.isDom||(this.isDom=!0,this.events.trigger("LPT","DOM_READY",{t:t})),this._timing[t]=(new Date).getTime()},vars:lpTag.vars||[],dbs:lpTag.dbs||[],ctn:lpTag.ctn||[],sdes:lpTag.sdes||[],ev:lpTag.ev||[]},lpTag.init()):window.lpTag._tagCount+=1;
+<!-- END LivePerson Monitor. -->
+    </script>
+</head>
+<body>
+
+
+<div class="container">
+    <div class="row" >
+        <div class="col-md-8" id="web-message-ex-top" >
+            <div id="web-message-ex">The Web Messaging Experience</div>
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col-md-4" id="info-form">
+            <div id="lp-info">
+                <div><img id="window-icon" title="Web Messaging" src="../img/group-8.png" alt="Web Messaging"/></div>
+                <div><img id="window-preview" title="Web Messaging" src="../img/window-preview.png" alt="Web Messaging"/>
+                </div>
+                <div id="This-is-where-you-ar"> This is where you are able to see what your messaging window will look
+                    like
+                    on a web site, so you can check and make sure all looks good!
+                </div>
+                <div><img id="powered-by" title="Powered By LivePerson" src="../img/group-10.png" alt="Web Messaging"/>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" id="lp-form">
+            <form id="lp_form">
+                <div class="row">
+                    <div class="col">
+                        <div>
+                            <b id="environment">Alpha Account </b>
+                            <br><input class="form-control" id="lp_account" placeholder=" enter your account info" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div>
+                            <b id="username">Username</b><br>
+                            <input class="form-control" id="lp_username" placeholder=" enter your username">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col" >
+                        <button class="btn-block" id="lp_btn_login" type="submit">UPDATE</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col-md-8" id="bottom-divider"></div>
+    </div>
+    <div class="row" >
+        <div class="col-md-8" id="account_setup">
+            <div id="lp_lnk_setup">
+                <a data-toggle="modal" href="#" data-target="#modal" role="button" >
+                    ACCOUNT SETUP <img class="expand" src="../img/icn-caret.png" alt="Account Setup"/>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3">
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog" role="document" >
+            <div class="modal-content" id="collapseSetup">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="Account-Setup">Account Setup</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-12" id="The-following-config">
+                                The following configuration is the default in data sources authentication server
+                                configuration. It can be changed if needed.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8" >
+                                <b class="Authentication-Endpo">Authentication Endpoint:</b>
+                                <button type="button" class="btn btn-link copy" id="auth-copy" onClick="copyToClipboard()"
+                                        data-clipboard-text="https://vx-lp.github.io/lpwma/auth.html">COPY</button>
+                                <div class="Rectangle">
+                                    <p class="vw-lpgithub">
+                                        https://vx-lp.github.io/lpwma/auth.html
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <b class="Token-Endpoint">Token endpoint:</b>
+                                <button type="button" class="btn btn-link copy" onClick="copyToClipboard()"
+                                        data-clipboard-text="https://va-a.idp.liveperson.net/idp/public/authenticate">COPY</button><br/>
+                                <div class="Rectangle">
+                                    <p class="vw-idplivepe">https://va-a.idp.liveperson.net/idp/public/authenticate</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <b class="JS-method-name">JS method name:</b>
+                                <button type="button" class="btn btn-link copy" onClick="copyToClipboard()"
+                                        data-clipboard-text="LPJsMethodName">COPY</button><br/>
+                                <div class="Rectangle">
+                                    <p class="LPJsMethodName">LPJsMethodName</p><br/><br/>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <b class="JS-context">JS context:</b>
+                                <button type="button" class="btn btn-link copy" onClick="copyToClipboard()" data-clipboard-text="LPJsContext">COPY</button><br/>
+                                <div class="Rectangle">
+                                    <p class="LPJsContext">LPJsContext</p><br/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <b class="JWT">JWT public key:</b>
+                                <button type="button" class="btn btn-link copy" onClick="copyToClipboard()"
+                                        data-clipboard-text='MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvNDIU1yUm+8MF/IC1JmhOiuXHOt3hKmY1IYMfgEWlGhNhze3wrayhbMebJfFUesiy9q3tuzK/AbJyvO7xZK2XC9UC1kOWyqHPcNKh1uVPTkSrR/2j+sdeR0H8qVS+mIqS7nDjA+rrkuztzaUMmiqg/W35XG5jAsDhtfYiSTgjxEYKJYn94ec+RnYR8Gdt8il+GszlOSg2fuBjlSpG4YMM7TOSoq1VBn7GamU72lSN4w9kmw2GtTk9Q9g8niY1AqPKARbDZ/xS4RJEy4F/HUvRCvjtXUXDtzd1yzRxNbyX4/twSz0cqAW6nRjAyHdxT3kIowj3+qx5wlDltNH/6DhBwIDAQAB'>COPY</button><br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12"  >
+                                <div id="Rectangle-pub">
+                                    <div  id="pub-key">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvNDIU1yUm+8MF/IC1JmhOiuXHOt3hKmY1IYMfgEWlGhNhze3wrayhbMebJfFUesiy9q3tuzK/AbJyvO7xZK2XC9UC1kOWyqHPcNKh1uVPTkSrR/2j+sdeR0H8qVS+mIqS7nDjA+rrkuztzaUMmiqg/W35XG5jAsDhtfYiSTgjxEYKJYn94ec+RnYR8Gdt8il+GszlOSg2fuBjlSpG4YMM7TOSoq1VBn7GamU72lSN4w9kmw2GtTk9Q9g8niY1AqPKARbDZ/xS4RJEy4F/HUvRCvjtXUXDtzd1yzRxNbyX4/twSz0cqAW6nRjAyHdxT3kIowj3+qx5wlDltNH/6DhBwIDAQAB</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="modal-footer">
+                            <a role="button" href="#" id="modal-close" data-dismiss="modal">
+                                CLOSE <img class="expand" src="../img/icn-caret-up.png" alt="Account Setup"/>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<footer>
+
+</footer>
+
+<script src="../../v2/script.js"></script>
+
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="../js/bootstrap.min.js"></script>
+</body>
+</html>
