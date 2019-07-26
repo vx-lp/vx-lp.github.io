@@ -9,7 +9,7 @@ if (site && username) {
 
     lpTag.identities = [];
     lpTag.identities.push(identityFn);
-    const usernameResult = username;
+    const usernameResult = 'lpTest' + username;
 
     function identityFn(callback) {
         callback({
@@ -22,11 +22,11 @@ if (site && username) {
     lpTag.sdes.push({"type": "ctmrinfo", "info": {customerId: usernameResult}});
 
     window.LPJsMethodName = function (callback) {
-        callback(usernameResult);
+        callback(username);
     };
 
     LPGetAuthenticationToken = function (callback) {
-        callback(usernameResult);
+        callback(username);
     }
 }
 

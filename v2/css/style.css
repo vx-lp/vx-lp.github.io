@@ -229,9 +229,9 @@ body {
 }
 
 #powered-by {
-    margin-top: 40px;
+    /*margin-top: 20px;*/
     margin-right: 40px;
-    margin-left: 90px;
+    margin-left: 85px;
 }
 
 #web-message-ex-top {
