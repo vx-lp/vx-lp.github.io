@@ -9,7 +9,6 @@
     <title>Web Messaging</title>
 
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
 
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/style.css">
@@ -41,6 +40,28 @@
                 container: document.getElementById('modal')
             });
         }
+
+        $(window).on("load",function(){
+            if (site){
+                const console = {};
+
+                // Getting div to insert logs
+                const logger = document.getElementById("log-version");
+
+                // Adding log method from our console object
+                console.log = function(text)
+                {
+                    const element = document.createElement("div");
+                    const txt = document.createTextNode(text);
+
+                    element.appendChild(txt);
+                    logger.appendChild(element);
+                };
+
+                console.log("v: " + lpTag.taglets.lpUnifiedWindow.v);
+            }
+        });
+
     </script>
 
 
@@ -49,7 +70,11 @@
         <!-- BEGIN LivePerson Monitor. -->
             window.lpTag=window.lpTag||{},"undefined"==typeof window.lpTag._tagCount?(window.lpTag={site:site||"",section:lpTag.section||"",tagletSection:lpTag.tagletSection||null,autoStart:lpTag.autoStart!==!1,ovr:lpTag.ovr||{domain: 'lptag-dev.dev.lprnd.net', tagjs: 'lptag-dev.dev.lprnd.net'},_v:"1.7.0",_tagCount:1,protocol:"https:",events:{bind:function(t,e,i){lpTag.defer(function(){lpTag.events.bind(t,e,i)},0)},trigger:function(t,e,i){lpTag.defer(function(){lpTag.events.trigger(t,e,i)},1)}},defer:function(t,e){0==e?(this._defB=this._defB||[],this._defB.push(t)):1==e?(this._defT=this._defT||[],this._defT.push(t)):(this._defL=this._defL||[],this._defL.push(t))},load:function(t,e,i){var n=this;setTimeout(function(){n._load(t,e,i)},0)},_load:function(t,e,i){var n=t;t||(n=this.protocol+"//"+(this.ovr&&this.ovr.domain?this.ovr.domain:"lptag.liveperson.net")+"/tag/tag.js?site="+this.site);var a=document.createElement("script");a.setAttribute("charset",e?e:"UTF-8"),i&&a.setAttribute("id",i),a.setAttribute("src",n),document.getElementsByTagName("head").item(0).appendChild(a)},init:function(){this._timing=this._timing||{},this._timing.start=(new Date).getTime();var t=this;window.attachEvent?window.attachEvent("onload",function(){t._domReady("domReady")}):(window.addEventListener("DOMContentLoaded",function(){t._domReady("contReady")},!1),window.addEventListener("load",function(){t._domReady("domReady")},!1)),"undefined"==typeof window._lptStop&&this.load()},start:function(){this.autoStart=!0},_domReady:function(t){this.isDom||(this.isDom=!0,this.events.trigger("LPT","DOM_READY",{t:t})),this._timing[t]=(new Date).getTime()},vars:lpTag.vars||[],dbs:lpTag.dbs||[],ctn:lpTag.ctn||[],sdes:lpTag.sdes||[],ev:lpTag.ev||[]},lpTag.init()):window.lpTag._tagCount+=1;
         <!-- END LivePerson Monitor. -->
+
+
     </script>
+
+
 
 </head>
 
@@ -99,21 +124,35 @@
                             <button class="btn-block" id="lp_btn_login" type="submit">UPDATE</button>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col" >
+                        <div id="log-version"></div>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
     <div class="row" >
         <div class="col-md-8" id="bottom-divider"></div>
     </div>
-    <div class="row" >
+    <div class="row">
         <div class="col-md-8" id="account_setup">
-            <div id="lp_lnk_setup">
-                <a data-toggle="modal" href="#" data-target="#modal" role="button" >
-                    ACCOUNT SETUP <img class="expand" src="../img/icn-caret.png" alt="Account Setup"/>
-                </a>
+            <div class="row">
+                <div class="col">
+                    <div class="lp_lnk_setup">
+                        <a data-toggle="modal" href="#" data-target="#modal" role="button">
+                            ACCOUNT SETUP <img class="expand" src="../img/icn-caret.png" alt="Account Setup"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="col">
+                    <a class="lp_lnk_setup" data-toggle="modal" href="#" data-target="#qr-modal" role="button">
+                        QR CODE <img class="caret" src="../img/icn-caret.png" alt="QR Code"/>
+                    </a>
+                </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
 
         </div>
     </div>
@@ -122,9 +161,9 @@
          aria-hidden="true">
 
         <div class="modal-dialog" role="document" >
-                <div class="modal-content" id="collapseSetup">
+                <div class="modal-content modal-setup">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="Account-Setup">Account Setup</h5>
+                        <h5 class="modal-title">Account Setup</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -132,7 +171,7 @@
                     <div class="modal-body">
                         <div class="container-fluid">
                             <div class="row">
-                                <div class="col-lg-12" id="The-following-config">
+                                <div class="col-lg-12 modal-description-text">
                                     The following configuration is the default in data sources authentication server
                                     configuration. It can be changed if needed.
                                 </div>
@@ -193,7 +232,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="modal-footer">
-                                <a role="button" href="#" id="modal-close" data-dismiss="modal">
+                                <a role="button" href="#" class="modal-close" data-dismiss="modal">
                                     CLOSE <img class="expand" src="../img/icn-caret-up.png" alt="Account Setup"/>
                                 </a>
                             </div>
@@ -202,6 +241,43 @@
                 </div>
         </div>
 
+    </div>
+
+    <div class="modal fade" id="qr-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content modal-setup">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">QA Code</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-12 modal-description-text" >
+                                Scan QR code using mobile camera to open page in mobile browser.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-5"><img class="caret" src="../img/qa-qr-code.png" alt="QR Code"/></div>
+                            <div class="col-md-3"></div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="modal-footer">
+                            <a role="button" href="#" class="modal-close" data-dismiss="modal">
+                                CLOSE <img class="expand" src="../img/icn-caret-up.png" alt="Account Setup"/>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -214,6 +290,7 @@
 <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="../js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
 
 </body>
 </html>
