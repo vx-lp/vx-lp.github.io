@@ -8,7 +8,6 @@
     <title>Web Messaging </title>
 
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
 
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/style.css">
@@ -40,6 +39,27 @@
                 container: document.getElementById('modal')
             });
         }
+
+        $(window).on("load",function(){
+            if (site){
+                const console = {};
+
+                // Getting div to insert logs
+                const logger = document.getElementById("log-version");
+
+                // Adding log method from our console object
+                console.log = function(text)
+                {
+                    const element = document.createElement("div");
+                    const txt = document.createTextNode(text);
+
+                    element.appendChild(txt);
+                    logger.appendChild(element);
+                };
+
+                console.log("v: " + lpTag.taglets.lpUnifiedWindow.v);
+            }
+        });
     </script>
 
     <script language="javascript">
@@ -92,6 +112,11 @@ window.lpTag=window.lpTag||{},"undefined"==typeof window.lpTag._tagCount?(window
                         <button class="btn-block" id="lp_btn_login" type="submit">UPDATE</button>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col" >
+                        <div id="log-version"></div>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
@@ -100,13 +125,22 @@ window.lpTag=window.lpTag||{},"undefined"==typeof window.lpTag._tagCount?(window
     </div>
     <div class="row" >
         <div class="col-md-8" id="account_setup">
-            <div id="lp_lnk_setup">
-                <a data-toggle="modal" href="#" data-target="#modal" role="button" >
-                    ACCOUNT SETUP <img class="expand" src="../img/icn-caret.png" alt="Account Setup"/>
-                </a>
+            <div class="row">
+                <div class="col">
+                    <div class="lp_lnk_setup">
+                        <a data-toggle="modal" href="#" data-target="#modal" role="button">
+                            ACCOUNT SETUP <img class="expand" src="../img/icn-caret.png" alt="Account Setup"/>
+                        </a>
+                    </div>
+                </div>
+                <div class="col">
+                    <a class="lp_lnk_setup" data-toggle="modal" href="#" data-target="#qr-modal" role="button">
+                        QR CODE <img class="caret" src="../img/icn-caret.png" alt="QR Code"/>
+                    </a>
+                </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
 
         </div>
     </div>
@@ -115,9 +149,9 @@ window.lpTag=window.lpTag||{},"undefined"==typeof window.lpTag._tagCount?(window
          aria-hidden="true">
 
         <div class="modal-dialog" role="document" >
-            <div class="modal-content" id="collapseSetup">
+            <div class="modal-content modal-setup">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="Account-Setup">Account Setup</h5>
+                    <h5 class="modal-title">Account Setup</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -125,7 +159,7 @@ window.lpTag=window.lpTag||{},"undefined"==typeof window.lpTag._tagCount?(window
                 <div class="modal-body">
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-lg-12" id="The-following-config">
+                            <div class="col-lg-12 modal-description-text">
                                 The following configuration is the default in data sources authentication server
                                 configuration. It can be changed if needed.
                             </div>
@@ -196,6 +230,43 @@ window.lpTag=window.lpTag||{},"undefined"==typeof window.lpTag._tagCount?(window
         </div>
 
     </div>
+
+    <div class="modal fade" id="qr-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content modal-setup">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">QA Code</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-12 modal-description-text" >
+                                Scan QR code using mobile camera to open page in mobile browser.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-5"><img class="caret" src="../img/ga-qr-code.png" alt="QR Code"/></div>
+                            <div class="col-md-3"></div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="modal-footer">
+                            <a role="button" href="#" class="modal-close" data-dismiss="modal">
+                                CLOSE <img class="expand" src="../img/icn-caret-up.png" alt="Account Setup"/>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <footer>
@@ -207,5 +278,8 @@ window.lpTag=window.lpTag||{},"undefined"==typeof window.lpTag._tagCount?(window
 <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="../js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+<script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+
 </body>
 </html>
