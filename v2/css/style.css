@@ -286,7 +286,7 @@ body {
 }
 
 .modal-title {
-    width: 119px;
+    /*width: 119px;*/
     height: 24px;
     font-family: Roboto, sans-serif;
     font-size: 18px;
@@ -482,8 +482,8 @@ body {
 }
 
 .copy {
-    width: 33px;
-    height: 10px;
+    /*width: 33px;*/
+    /*height: 10px;*/
     opacity: 0.5;
     font-family: Roboto, sans-serif;
     font-size: 10px;
@@ -494,7 +494,7 @@ body {
     letter-spacing: 2.18px;
     text-align: center;
     color: #ffffff;
-    margin-bottom: 5px;
+    /*margin-bottom: 5px;*/
 }
 
 .modal-close {
