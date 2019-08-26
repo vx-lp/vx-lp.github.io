@@ -16,6 +16,7 @@
 
     <script>
         var env = "ALPHA";
+
         function getURLParams(search) {
             var queryParams = {}, queryArray, singleQuery;
             queryArray = search.substr(1).split("&");
@@ -39,28 +40,6 @@
                 container: document.getElementById('modal')
             });
         }
-
-        $(window).on("load",function(){
-            if (site){
-                const console = {};
-
-                // Getting div to insert logs
-                const logger = document.getElementById("log-version");
-
-                // Adding log method from our console object
-                console.log = function(text)
-                {
-                    const element = document.createElement("div");
-                    const txt = document.createTextNode(text);
-
-                    element.appendChild(txt);
-                    logger.appendChild(element);
-                };
-
-                console.log("v: " + lpTag.taglets.lpUnifiedWindow.v);
-            }
-        });
-
 
     </script>
 
@@ -276,6 +255,39 @@ window.lpTag=window.lpTag||{},"undefined"==typeof window.lpTag._tagCount?(window
 <footer>
 
 </footer>
+
+<script>
+    $(window).on("load",function(){
+        if (site){
+            const console = {};
+
+            // Getting div to insert logs
+            const logger = document.getElementById("log-version");
+
+            // Adding log method from our console object
+            console.log = function(text)
+            {
+                const element = document.createElement("div");
+                const txt = document.createTextNode(text);
+
+                element.appendChild(txt);
+                logger.appendChild(element);
+            };
+
+            if(lpTag.taglets.lpUnifiedWindow){
+                console.log("uw: " + lpTag.taglets.lpUnifiedWindow.v);
+            }
+            if(lpTag.taglets.unAuthMessaging){
+                console.log("unauth: " + lpTag.taglets.unAuthMessaging.version);
+            }
+            if(lpTag.taglets.lpSecureStorage){
+                console.log("ss: " + lpTag.taglets.lpSecureStorage.v);
+            }
+            if(lpTag.taglets.rendererStub){
+                console.log("renderStub: " + lpTag.taglets.rendererStub._v);
+            }
+        }
+    });</script>
 
 <script src="../../v2/script.js"></script>
 
