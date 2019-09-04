@@ -35,7 +35,7 @@ $("#lp_form").submit(function (e) {
     const site = $("#lp_account").val();
     const username = $("#lp_username").val();
 
-    if(window.location.href.indexOf(username) && username === "") {
+    if(window.location.href.indexOf(username) > -1) {
         window.history.replaceState(null, null, window.location.pathname);
     }
     if (username === "") {
