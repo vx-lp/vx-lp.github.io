@@ -9,7 +9,7 @@ if (site && username) {
 
     lpTag.identities = [];
     lpTag.identities.push(identityFn);
-    const usernameResult = 'lpTest' + username;
+    var usernameResult = 'lpTest' + username;
 
     function identityFn(callback) {
         callback({
