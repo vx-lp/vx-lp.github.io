@@ -34,6 +34,7 @@
 
         const site = getURLParams(window.location.search).site || "";
         const username = getURLParams(window.location.search).username || "";
+        var asyncIdentity = getURLParams(window.location.search).async_identity || "0";
 
         function copyToClipboard() {
             /* Get the text field */
@@ -99,6 +100,21 @@
                             <b id="username">Username</b><br>
                             <input class="form-control" id="lp_username" placeholder=" enter your username">
                         </div>
+                    </div>
+                </div>
+                <div class="row hidden" id="async-identity-check">
+                    <div class="col">
+                        <label
+                                class="checkbox-label"
+                                for="use-async-identity"
+                                title="By checking this checkbox you change the behavior of auth identity function. It will return identity data with a 3 seconds delay. This simulates request to Brand's IDP"
+                        >Use async auth identity function</label>
+                        <input
+                                class="checkbox-field"
+                                type="checkbox"
+                                id="use-async-identity"
+                                title="By checking this checkbox you change the behavior of auth identity function. It will return identity data with a 3 seconds delay. This simulates request to Brand's IDP"
+                        >
                     </div>
                 </div>
                 <div class="row">

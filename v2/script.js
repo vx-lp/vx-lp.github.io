@@ -1,23 +1,40 @@
+const asyncIdentityCheckArea = $("#async-identity-check");
+const useAsyncIdentityCheckbox = $("#use-async-identity");
+const usernameInput = $("#lp_username");
+const accInput = $("#lp_account");
+let identityFn;
 if (site) {
-    // $("#lp_account").attr("disabled", "disabled");
-    $("#lp_account").val(site);
+    accInput.val(site);
 }
 
 if (site && username) {
-    // $("#lp_username").attr("disabled", "disabled");
-    $("#lp_username").val(username);
-
+    usernameInput.val(username);
+    asyncIdentityCheckArea.removeClass("hidden");
+    if (asyncIdentity === "1") {
+        useAsyncIdentityCheckbox.get(0).checked = true;
+        identityFn = function (callback) {
+            console.log("Async identity called");
+            setTimeout(function () {
+                console.log("Async identity returned identity data");
+                callback({
+                    iss: "LivePerson",
+                    acr: "loa1",
+                    sub: usernameResult
+                });
+            }, 3000);
+        }
+    } else {
+        identityFn = function(callback) {
+            callback({
+                iss: "LivePerson",
+                acr: "loa1",
+                sub: usernameResult
+            });
+        }
+    }
     lpTag.identities = [];
     lpTag.identities.push(identityFn);
     var usernameResult = 'lpTest' + username;
-
-    function identityFn(callback) {
-        callback({
-            iss: "LivePerson",
-            acr: "loa1",
-            sub: usernameResult
-        });
-    }
 
     lpTag.sdes.push({"type": "ctmrinfo", "info": {customerId: usernameResult}});
 
@@ -32,8 +49,9 @@ if (site && username) {
 
 $("#lp_form").submit(function (e) {
     e.preventDefault();
-    const site = $("#lp_account").val();
-    const username = $("#lp_username").val();
+    const site = accInput.val();
+    const username = usernameInput.val();
+    const useAsyncIdentity = useAsyncIdentityCheckbox.get(0).checked ? "1" : "0";
 
     if(window.location.href.indexOf(username) > -1) {
         window.history.replaceState(null, null, window.location.pathname);
@@ -42,8 +60,12 @@ $("#lp_form").submit(function (e) {
         window.location.href = updateQueryStringParameter(window.location.href, "site", site);
 
     } else {
-        const href = updateQueryStringParameter(window.location.href, "site", site);
-        window.location.href = updateQueryStringParameter(href, "username", username);
+        let href = updateQueryStringParameter(window.location.href, "site", site);
+        href = updateQueryStringParameter(href, "username", username);
+        if (useAsyncIdentity) {
+            href = updateQueryStringParameter(href, "async_identity", useAsyncIdentity);
+        }
+        window.location.href = href;
     }
 });
 
@@ -62,6 +84,15 @@ function updateQueryStringParameter(uri, key, value) {
 $('#lp_lnk_setup').click(function () {
     var isDescriptionDisplay = $('#lp_account_setup_description').css('display') === 'block';
     $('#lp_account_setup_description').css('display', isDescriptionDisplay ? 'none' : 'block');
+});
+
+usernameInput.on('input', function (e) {
+   if (e.target.value.trim()) {
+       asyncIdentityCheckArea.removeClass("hidden");
+   }  else {
+       asyncIdentityCheckArea.addClass("hidden");
+       useAsyncIdentityCheckbox.get(0).checked = false;
+   }
 });
 
 /*
