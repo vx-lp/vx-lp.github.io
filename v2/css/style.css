@@ -577,6 +577,7 @@ a {
 }
 .spa-wrapper #environment-select{
     border-radius: 20px;
+    cursor: pointer;
 }
 
 /*@media only screen and (max-width: 768px) {*/
