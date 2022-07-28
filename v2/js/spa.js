@@ -110,13 +110,14 @@
         window.lpTag.identities = window.lpTag.identities || [];
         this.callNewPage(this.data.action);
         if (this.data.action === "login") {
-            this.ui.loginBtnEl.innerText = "LOGOUT";
             this.data.action = "logout";
+            this.ui.loginBtnEl.innerText = "LOGOUT";
         } else {
             this.data.userName = "";
+            userName = "";
+            this.data.action = "login";
             this.ui.userNameInputEl.value = "";
             this.ui.loginBtnEl.innerText = "LOGIN";
-            this.data.action = "login";
         }
     }
 
