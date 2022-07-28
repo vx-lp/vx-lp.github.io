@@ -575,6 +575,9 @@ a {
 .spa-wrapper #lp-form {
     padding: 5px 50px;
 }
+.spa-wrapper #environment-select{
+    border-radius: 20px;
+}
 
 /*@media only screen and (max-width: 768px) {*/
 /*section {*/
