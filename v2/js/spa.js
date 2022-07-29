@@ -120,21 +120,21 @@
         if (this.data.accNum.trim().length === 0) {
             return;
         }
-        if (this.data.action === "login" && !this.data.userName) {
+        if (this.data.action === 'login' && !this.data.userName) {
             return;
         }
         window.lpTag = window.lpTag || {};
         window.lpTag.identities = window.lpTag.identities || [];
         this.callNewPage(this.data.action);
-        if (this.data.action === "login") {
-            this.data.action = "logout";
-            this.ui.loginBtnEl.innerText = "LOGOUT";
+        if (this.data.action === 'login') {
+            this.data.action = 'logout';
+            this.ui.loginBtnEl.innerText = 'LOGOUT';
         } else {
-            this.data.userName = "";
-            userName = "";
-            this.data.action = "login";
-            this.ui.userNameInputEl.value = "";
-            this.ui.loginBtnEl.innerText = "LOGIN";
+            this.data.userName = '';
+            userName = '';
+            this.data.action = 'login';
+            this.ui.userNameInputEl.value = '';
+            this.ui.loginBtnEl.innerText = 'LOGIN';
         }
     }
 
@@ -146,9 +146,9 @@
     SPA.prototype.toggleIdentities = function (action) {
         lpTag.identities = lpTag.identities || [];
         lpTag.sdes = lpTag.sdes || [];
-        if (action === "login") {
+        if (action === 'login') {
             lpTag.identities.push(getAuthData);
-            lpTag.sdes.push({"type": "ctmrinfo", "info": {customerId: 'lpTest' + userName}});
+            lpTag.sdes.push({type: 'ctmrinfo', info: {customerId: 'lpTest' + userName}});
 
             window.LPJsMethodName = function (callback) {
                 callback(userName);
@@ -172,8 +172,8 @@
     function getAuthData (callback) {
         if (userName) {
             callback({
-                iss: "LivePerson",
-                acr: "loa1",
+                iss: 'LivePerson',
+                acr: 'loa1',
                 sub: userName
             });
         } else {
