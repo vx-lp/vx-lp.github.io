@@ -25,6 +25,7 @@
     /*******************CONSTANTS END***************/
 
     let userName = '';
+
     function SPA() {
         this.init();
         this.initUI();
@@ -53,10 +54,6 @@
             .replace('{{domain}}', ENV_URLS[env].domain)
             .replace('{{tagjs}}', ENV_URLS[env].tagjs);
         document.head.appendChild(script);
-
-        if (this.data.action === 'logout') {
-
-        }
     }
 
     SPA.prototype.initUI = function () {
