@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/v3/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LivePerson Web Messaging</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <script>
+      const environmentMap = {
+        qa : {
+          tagDomain: 'lptag-dev.dev.lprnd.net',
+        },
+        alpha : {
+          tagDomain : 'lptag-a.liveperson.net',
+        },
+        prod : {
+          tagDomain : 'lptag.liveperson.net',
+        }
+      };
+  
+      function getURLParams(search) {
+        var queryParams = {}, queryArray, singleQuery;
+        queryArray = search.substr(1).split("&");
+        for (var i = 0; i < queryArray.length; i++) {
+          if (queryArray[i].indexOf("=") > 0) {
+            singleQuery = queryArray[i].split("=");
+            if (singleQuery.length == 2) {
+              queryParams[decodeURIComponent(singleQuery[0])] = decodeURIComponent(singleQuery[1]);
+            }
+          }
+        }
+        return queryParams;
+      }
+  
+      var lpWebMessaging = {
+        environment: getURLParams(window.location.search).environment || "",
+        account: getURLParams(window.location.search).account || "",
+        username: getURLParams(window.location.search).username || ""
+      }
+    </script>
+    <script>
+      window.lpTag = window.lpTag || {}, "undefined" == typeof window.lpTag._tagCount ? (window.lpTag = { site: lpWebMessaging.account || "", section: lpTag.section || "", tagletSection: lpTag.tagletSection || null, autoStart: lpTag.autoStart !== !1, ovr: lpTag.ovr || { domain: environmentMap[lpWebMessaging.environment].tagDomain, tagjs: environmentMap[lpWebMessaging.environment].tagDomain }, _v: "1.7.0", _tagCount: 1, protocol: "https:", events: { bind: function (t, e, i) { lpTag.defer(function () { lpTag.events.bind(t, e, i) }, 0) }, trigger: function (t, e, i) { lpTag.defer(function () { lpTag.events.trigger(t, e, i) }, 1) } }, defer: function (t, e) { 0 == e ? (this._defB = this._defB || [], this._defB.push(t)) : 1 == e ? (this._defT = this._defT || [], this._defT.push(t)) : (this._defL = this._defL || [], this._defL.push(t)) }, load: function (t, e, i) { var n = this; setTimeout(function () { n._load(t, e, i) }, 0) }, _load: function (t, e, i) { var n = t; t || (n = this.protocol + "//" + (this.ovr && this.ovr.domain ? this.ovr.domain : "lptag.liveperson.net") + "/tag/tag.js?site=" + this.site); var a = document.createElement("script"); a.setAttribute("charset", e ? e : "UTF-8"), i && a.setAttribute("id", i), a.setAttribute("src", n), document.getElementsByTagName("head").item(0).appendChild(a) }, init: function () { this._timing = this._timing || {}, this._timing.start = (new Date).getTime(); var t = this; window.attachEvent ? window.attachEvent("onload", function () { t._domReady("domReady") }) : (window.addEventListener("DOMContentLoaded", function () { t._domReady("contReady") }, !1), window.addEventListener("load", function () { t._domReady("domReady") }, !1)), "undefined" == typeof window._lptStop && this.load() }, start: function () { this.autoStart = !0 }, _domReady: function (t) { this.isDom || (this.isDom = !0, this.events.trigger("LPT", "DOM_READY", { t: t })), this._timing[t] = (new Date).getTime() }, vars: lpTag.vars || [], dbs: lpTag.dbs || [], ctn: lpTag.ctn || [], sdes: lpTag.sdes || [], ev: lpTag.ev || [] }, lpTag.init()) : window.lpTag._tagCount += 1;
+    </script>
+    <script type="module" crossorigin src="/v3/assets/index.b3fc47cb.js"></script>
+    <link rel="stylesheet" href="/v3/assets/index.1b5cd6ae.css">
+  </head>
+  <body>
+    <div id="app"></div>
+    
+  </body>
+</html>
