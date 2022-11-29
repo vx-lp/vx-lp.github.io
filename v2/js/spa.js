@@ -36,15 +36,25 @@
     SPA.prototype.init = function () {
         const queryParams = window.location.search;
         const queryParamsObj = new URLSearchParams(queryParams);
+
+        window.lpTag = window.lpTag || {};
         this.data = {
             accNum: queryParamsObj.get('account'),
             env: queryParamsObj.get('env') || 'alpha',
             action: queryParamsObj.get('username') ? 'logout' : 'login',
             userName: queryParamsObj.get('username') || ''
         };
+
         if (this.data.accNum) {
             this.injectLPTagMonitor(this.data.env);
         }
+
+        if (this.data.userName) {
+            userName = this.data.userName;
+            this.toggleIdentities('login');
+            this.isInitialRunWithUsername = true;
+        }
+
     };
 
     SPA.prototype.injectLPTagMonitor = function (env) {
@@ -72,6 +82,11 @@
         this.ui.envSelectEl.value = this.data.env;
         this.ui.userNameInputEl.value = this.data.userName;
         this.ui.backLink.setAttribute('href', '../' + TEST_PAGE_LOCATIONS[this.data.env]);
+        if (this.isInitialRunWithUsername) {
+            this.data.action = 'logout';
+            this.ui.loginBtnEl.innerText = 'LOGOUT';
+            this.isInitialRunWithUsername = false;
+        }
     };
 
     SPA.prototype.bindUIEvents = function () {
@@ -122,16 +137,20 @@
         }
         window.lpTag = window.lpTag || {};
         window.lpTag.identities = window.lpTag.identities || [];
-        this.callNewPage(this.data.action);
+        this.callNewPage();
         if (this.data.action === 'login') {
             this.data.action = 'logout';
             this.ui.loginBtnEl.innerText = 'LOGOUT';
+            if (this.data.userName) {
+                this.setUserNameToUrl();
+            }
         } else {
             this.data.userName = '';
             userName = '';
             this.data.action = 'login';
             this.ui.userNameInputEl.value = '';
             this.ui.loginBtnEl.innerText = 'LOGIN';
+            this.removeUserNameFromUrl();
         }
     }
 
@@ -161,6 +180,24 @@
             }
             delete window.LPJsMethodName;
             delete window.LPGetAuthenticationToken;
+        }
+    }
+
+    SPA.prototype.setUserNameToUrl = function () {
+        const queryParams = window.location.search;
+        const queryParamsObj = new URLSearchParams(queryParams);
+        const url = window.location.href;
+        queryParamsObj.set('username', this.data.userName);
+        history.pushState({}, '', url.replace(/\?.+$/, '?' + queryParamsObj.toString()));
+    }
+
+    SPA.prototype.removeUserNameFromUrl = function () {
+        const queryParams = window.location.search;
+        const queryParamsObj = new URLSearchParams(queryParams);
+        const url = window.location.href;
+        if (queryParamsObj.has('username')) {
+            queryParamsObj.delete('username');
+            history.pushState({}, '', url.replace(/\?.+$/, '?' + queryParamsObj.toString()));
         }
     }
 
