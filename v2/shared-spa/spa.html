@@ -75,18 +75,31 @@
                         </div>
                     </div>
                 </div>
-                <div class="row hidden" id="async-identity-check">
+                <div class="row hidden" id="identity-check-area">
                     <div class="col">
                         <label
                                 class="checkbox-label"
                                 for="use-async-identity"
                                 title="By checking this checkbox you change the behavior of auth identity function. It will return identity data with a 3 seconds delay. This simulates request to Brand's IDP"
-                        >Use async auth identity function</label>
+                        >Use async identity</label>
                         <input
                                 class="checkbox-field"
                                 type="checkbox"
                                 id="use-async-identity"
                                 title="By checking this checkbox you change the behavior of auth identity function. It will return identity data with a 3 seconds delay. This simulates request to Brand's IDP"
+                        >
+                    </div>
+                    <div class="col">
+                        <label
+                                class="checkbox-label"
+                                for="use-secure-identity"
+                                title="When this checked the auth flow will use tkn and redirect_uri fields instead of sub field in the identity"
+                        >Use secure identity</label>
+                        <input
+                                class="checkbox-field"
+                                type="checkbox"
+                                id="use-secure-identity"
+                                title="When this checked the auth flow will use tkn and redirect_uri fields instead of sub field in the identity"
                         >
                     </div>
                 </div>
