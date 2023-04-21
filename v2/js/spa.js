@@ -37,7 +37,6 @@
         const queryParams = window.location.search;
         const queryParamsObj = new URLSearchParams(queryParams);
 
-
         window.lpTag = window.lpTag || {};
         this.data = {
             accNum: queryParamsObj.get('account'),
