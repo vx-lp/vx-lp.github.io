@@ -97,6 +97,8 @@
         } else {
             this.ui.identityCheckAreaEl.classList.add('hidden');
         }
+        this.ui.secureIdentityCheckbox.checked = !!this.data.isSecureIdentity;
+        this.ui.asyncIdentityCheckbox.checked = !!this.data.isAsyncIdentity;
     };
 
     SPA.prototype.bindUIEvents = function () {
@@ -152,7 +154,7 @@
                 this.data.isSecureIdentity = true;
                 setQueryParam('secure_identity', this.data.isSecureIdentity);
             } else {
-                this.data.isAsyncIdentity = false;
+                this.data.isSecureIdentity = false;
                 removeQueryParam('secure_identity');
             }
             this.render();
@@ -175,6 +177,8 @@
             this.data.action = 'logout';
             this.ui.loginBtnEl.innerText = 'LOGOUT';
             if (this.data.userName) {
+                setQueryParam('async_identity', this.data.isAsyncIdentity);
+                setQueryParam('secure_identity', this.data.isSecureIdentity);
                 setQueryParam('username', this.data.userName);
             }
         } else {
