@@ -31,9 +31,12 @@
             return queryParams;
         }
 
-        var site = getURLParams(window.location.search).site || "";
-        var username = getURLParams(window.location.search).username || "";
-        var asyncIdentity = getURLParams(window.location.search).async_identity || "0";
+        var params = getURLParams(window.location.search);
+
+        var site = params.site || "";
+        var username = params.username || "";
+        var isAsyncIdentity = params.async_identity === "true";
+        var isSecureIdentity = params.secure_identity === "true";
 
         function copyToClipboard() {
             /* Get the text field */

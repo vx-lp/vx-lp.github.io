@@ -17,14 +17,14 @@ if (site && username) {
         iss: "LivePerson",
         acr: "loa1"
     };
-    if (isSecureIdentity === "1") {
+    if (isSecureIdentity) {
         useSecureIdentityCheckbox.get(0).checked = true;
         authData.tkn = usernameResult;
         authData.redirect_uri = window.location.href;
     } else {
         authData.sub = usernameResult;
     }
-    if (asyncIdentity === "1") {
+    if (isAsyncIdentity) {
         useAsyncIdentityCheckbox.get(0).checked = true;
         identityFn = function (callback) {
             console.log("Async identity called");
@@ -58,8 +58,8 @@ $("#lp_form").submit(function (e) {
     e.preventDefault();
     const site = accInput.val();
     const username = usernameInput.val();
-    const useAsyncIdentity = useAsyncIdentityCheckbox.get(0).checked ? "1" : "0";
-    const useSecureIdentity = useSecureIdentityCheckbox.get(0).checked ? "1" : "0";
+    const useAsyncIdentity = useAsyncIdentityCheckbox.get(0).checked;
+    const useSecureIdentity = useSecureIdentityCheckbox.get(0).checked;
 
     if(window.location.href.indexOf(username) > -1) {
         window.history.replaceState(null, null, window.location.pathname);
