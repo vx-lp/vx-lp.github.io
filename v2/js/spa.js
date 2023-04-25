@@ -188,6 +188,9 @@
             this.data.isAsyncIdentity = false;
             this.data.action = 'login';
             this.ui.userNameInputEl.value = '';
+            this.ui.secureIdentityCheckbox.checked = false;
+            this.ui.asyncIdentityCheckbox.checked = false;
+            this.ui.identityCheckAreaEl.classList.add('hidden');
             this.ui.loginBtnEl.innerText = 'LOGIN';
             removeQueryParam('username');
             removeQueryParam('async_identity');
