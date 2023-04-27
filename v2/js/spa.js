@@ -210,21 +210,34 @@
         if (action === 'login') {
             lpTag.identities.push(getAuthData);
             lpTag.sdes.push({type: 'ctmrinfo', info: {customerId: 'lpTest' + userName}});
-            window.LPJsMethodName = window.LPGetAuthenticationToken = function (callback) {
-                if (self.data.isSecureIdentity) {
-                    callback({ssoKey: userName, redirect_uri: window.location.href});
-                } else {
-                    callback(userName);
-                }
-            }
+            this.setAuthMethods();
         } else {
             let index = lpTag.identities.indexOf(getAuthData);
             if (index > -1) {
                 lpTag.identities.splice(index, 1);
             }
-            delete window.LPJsMethodName;
-            delete window.LPGetAuthenticationToken;
+            this.removeAuthMethods();
         }
+    }
+
+    SPA.prototype.setAuthMethods = function () {
+        var self = this;
+
+        function authMethod(callback) {
+            if (self.data.isSecureIdentity) {
+                callback({ssoKey: userName, redirect_uri: window.location.href});
+            } else {
+                callback(userName);
+            }
+        }
+
+        window.LPJsMethodName = authMethod;
+        window.LPGetAuthenticationToken = authMethod;
+    }
+
+    SPA.prototype.removeAuthMethods = function () {
+        delete window.LPJsMethodName;
+        delete window.LPGetAuthenticationToken;
     }
 
     const app = new SPA();
