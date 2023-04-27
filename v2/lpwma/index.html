@@ -30,10 +30,12 @@
             }
             return queryParams;
         }
+        var params = getURLParams(window.location.search);
 
-        var site = getURLParams(window.location.search).site || "";
-        var username = getURLParams(window.location.search).username || "";
-        var asyncIdentity = getURLParams(window.location.search).async_identity || "0";
+        var site = params.site || "";
+        var username = params.username || "";
+        var isAsyncIdentity = params.async_identity === "true";
+        var isSecureIdentity = params.secure_identity === "true";
 
         function copyToClipboard() {
             /* Get the text field */
@@ -93,18 +95,31 @@ window.lpTag=window.lpTag||{},"undefined"==typeof window.lpTag._tagCount?(window
                         </div>
                     </div>
                 </div>
-                <div class="row hidden" id="async-identity-check">
+                <div class="row hidden" id="identity-check-area">
                     <div class="col">
                         <label
                                 class="checkbox-label"
                                 for="use-async-identity"
                                 title="By checking this checkbox you change the behavior of auth identity function. It will return identity data with a 3 seconds delay. This simulates request to Brand's IDP"
-                        >Use async auth identity function</label>
+                        >Use async identity</label>
                         <input
                                 class="checkbox-field"
                                 type="checkbox"
                                 id="use-async-identity"
                                 title="By checking this checkbox you change the behavior of auth identity function. It will return identity data with a 3 seconds delay. This simulates request to Brand's IDP"
+                        >
+                    </div>
+                    <div class="col">
+                        <label
+                                class="checkbox-label"
+                                for="use-secure-identity"
+                                title="When this checked the auth flow will use tkn and redirect_uri fields instead of sub field in the identity"
+                        >Use secure identity</label>
+                        <input
+                                class="checkbox-field"
+                                type="checkbox"
+                                id="use-secure-identity"
+                                title="When this checked the auth flow will use tkn and redirect_uri fields instead of sub field in the identity"
                         >
                     </div>
                 </div>

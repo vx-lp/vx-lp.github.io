@@ -42,7 +42,9 @@
             accNum: queryParamsObj.get('account'),
             env: queryParamsObj.get('env') || 'alpha',
             action: queryParamsObj.get('username') ? 'logout' : 'login',
-            userName: queryParamsObj.get('username') || ''
+            userName: queryParamsObj.get('username') || '',
+            isAsyncIdentity: queryParamsObj.get('async_identity') === 'true',
+            isSecureIdentity: queryParamsObj.get('secure_identity') === 'true'
         };
 
         if (this.data.accNum) {
@@ -73,7 +75,10 @@
             accNumInputEl: document.querySelector('#lp_account'),
             injectBtnEl: document.querySelector('#lp_btn_inject'),
             loginBtnEl: document.querySelector('#lp_btn_login'),
-            userNameInputEl: document.querySelector('#lp_username')
+            userNameInputEl: document.querySelector('#lp_username'),
+            identityCheckAreaEl: document.querySelector('#identity-check-area'),
+            asyncIdentityCheckbox: document.querySelector('#use-async-identity'),
+            secureIdentityCheckbox: document.querySelector('#use-secure-identity')
         };
     };
 
@@ -87,6 +92,13 @@
             this.ui.loginBtnEl.innerText = 'LOGOUT';
             this.isInitialRunWithUsername = false;
         }
+        if (this.data.userName) {
+            this.ui.identityCheckAreaEl.classList.remove('hidden');
+        } else {
+            this.ui.identityCheckAreaEl.classList.add('hidden');
+        }
+        this.ui.secureIdentityCheckbox.checked = !!this.data.isSecureIdentity;
+        this.ui.asyncIdentityCheckbox.checked = !!this.data.isAsyncIdentity;
     };
 
     SPA.prototype.bindUIEvents = function () {
@@ -98,6 +110,7 @@
         this.ui.userNameInputEl.addEventListener('input', function (e) {
             this.data.userName = e.target.value.trim();
             userName = this.data.userName;
+            this.render();
         }.bind(this));
 
         this.ui.injectBtnEl.addEventListener('click', function (e) {
@@ -125,6 +138,28 @@
             this.render();
         }.bind(this));
 
+        this.ui.asyncIdentityCheckbox.addEventListener('change', function (e) {
+            if (e.target.checked) {
+                this.data.isAsyncIdentity = true;
+                setQueryParam('async_identity', this.data.isAsyncIdentity);
+            } else {
+                this.data.isAsyncIdentity = false;
+                removeQueryParam('async_identity');
+            }
+            this.render();
+        }.bind(this));
+
+        this.ui.secureIdentityCheckbox.addEventListener('change', function (e) {
+            if (e.target.checked) {
+                this.data.isSecureIdentity = true;
+                setQueryParam('secure_identity', this.data.isSecureIdentity);
+            } else {
+                this.data.isSecureIdentity = false;
+                removeQueryParam('secure_identity');
+            }
+            this.render();
+        }.bind(this));
+
     };
 
     SPA.prototype.loginLogout = function (e) {
@@ -142,15 +177,24 @@
             this.data.action = 'logout';
             this.ui.loginBtnEl.innerText = 'LOGOUT';
             if (this.data.userName) {
-                this.setUserNameToUrl();
+                setQueryParam('async_identity', this.data.isAsyncIdentity);
+                setQueryParam('secure_identity', this.data.isSecureIdentity);
+                setQueryParam('username', this.data.userName);
             }
         } else {
             this.data.userName = '';
             userName = '';
+            this.data.isSecureIdentity = false;
+            this.data.isAsyncIdentity = false;
             this.data.action = 'login';
             this.ui.userNameInputEl.value = '';
+            this.ui.secureIdentityCheckbox.checked = false;
+            this.ui.asyncIdentityCheckbox.checked = false;
+            this.ui.identityCheckAreaEl.classList.add('hidden');
             this.ui.loginBtnEl.innerText = 'LOGIN';
-            this.removeUserNameFromUrl();
+            removeQueryParam('username');
+            removeQueryParam('async_identity');
+            removeQueryParam('secure_identity');
         }
     }
 
@@ -160,58 +204,85 @@
     }
 
     SPA.prototype.toggleIdentities = function (action) {
+        const self = this;
         lpTag.identities = lpTag.identities || [];
         lpTag.sdes = lpTag.sdes || [];
         if (action === 'login') {
             lpTag.identities.push(getAuthData);
             lpTag.sdes.push({type: 'ctmrinfo', info: {customerId: 'lpTest' + userName}});
-
-            window.LPJsMethodName = function (callback) {
-                callback(userName);
-            };
-
-            window.LPGetAuthenticationToken = function (callback) {
-                callback(userName);
-            }
+            this.setAuthMethods();
         } else {
             let index = lpTag.identities.indexOf(getAuthData);
             if (index > -1) {
                 lpTag.identities.splice(index, 1);
             }
-            delete window.LPJsMethodName;
-            delete window.LPGetAuthenticationToken;
+            this.removeAuthMethods();
         }
     }
 
-    SPA.prototype.setUserNameToUrl = function () {
-        const queryParams = window.location.search;
-        const queryParamsObj = new URLSearchParams(queryParams);
-        const url = window.location.href;
-        queryParamsObj.set('username', this.data.userName);
-        history.pushState({}, '', url.replace(/\?.+$/, '?' + queryParamsObj.toString()));
-    }
+    SPA.prototype.setAuthMethods = function () {
+        var self = this;
 
-    SPA.prototype.removeUserNameFromUrl = function () {
-        const queryParams = window.location.search;
-        const queryParamsObj = new URLSearchParams(queryParams);
-        const url = window.location.href;
-        if (queryParamsObj.has('username')) {
-            queryParamsObj.delete('username');
-            history.pushState({}, '', url.replace(/\?.+$/, '?' + queryParamsObj.toString()));
+        function authMethod(callback) {
+            if (self.data.isSecureIdentity) {
+                callback({ssoKey: userName, redirect_uri: window.location.href});
+            } else {
+                callback(userName);
+            }
         }
+
+        window.LPJsMethodName = authMethod;
+        window.LPGetAuthenticationToken = authMethod;
     }
 
-    new SPA();
+    SPA.prototype.removeAuthMethods = function () {
+        delete window.LPJsMethodName;
+        delete window.LPGetAuthenticationToken;
+    }
+
+    const app = new SPA();
+
+    //Helper functions
 
     function getAuthData (callback) {
         if (userName) {
-            callback({
+            const authData = {
                 iss: 'LivePerson',
-                acr: 'loa1',
-                sub: userName
-            });
+                acr: 'loa1'
+            }
+            if (app.data.isSecureIdentity) {
+                authData.tkn = userName;
+                authData.redirect_uri = window.location.href;
+            } else {
+                authData.sub = userName;
+            }
+            if (app.data.isAsyncIdentity) {
+                setTimeout(function () {
+                    callback(authData);
+                }, 1500);
+            } else {
+                callback(authData);
+            }
         } else {
             callback(null);
+        }
+    }
+
+    function setQueryParam(name, value) {
+        const queryParams = window.location.search;
+        const queryParamsObj = new URLSearchParams(queryParams);
+        const url = window.location.href;
+        queryParamsObj.set(name, value);
+        history.pushState({}, '', url.replace(/\?.+$/, '?' + queryParamsObj.toString()));
+    }
+
+    function removeQueryParam(name) {
+        const queryParams = window.location.search;
+        const queryParamsObj = new URLSearchParams(queryParams);
+        const url = window.location.href;
+        if (queryParamsObj.has(name)) {
+            queryParamsObj.delete(name);
+            history.pushState({}, '', url.replace(/\?.+$/, '?' + queryParamsObj.toString()));
         }
     }
 })();
