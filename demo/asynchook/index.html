@@ -11,20 +11,60 @@
     <!-- END LivePerson Monitor. -->
 
     <script>
-        setTimeout(scriptsLoaded, 300);
-        scriptsLoaded();
+
+        function tagletLoaded() {
+            if (lpTag.hooks && lpTag.hooks.pushAsync) {
+                scriptsLoaded();
+                return;
+            }
+            setTimeout(tagletLoaded, 20);
+        }
+
         function scriptsLoaded() {
             lpTag.hooks.pushAsync({
                 name: "BEFORE_WELCOME_MESSAGE",
                 callback: function (options, successCallback, errorCallback) {
-                    console.warn("Async hook triggered for 'BEFORE_WELCOME_MESSAGE' event");
+                    console.warn("Async hook was triggered for 'BEFORE_WELCOME_MESSAGE' event");
                     setTimeout(() => {
-                        options.data.content.text = "This welcome message text has been interfered with by a ASYNC hook."
+                        const quickReplyExample = {
+                                replies: [{
+                                    click: {
+                                        actions: [{
+                                            text: "Async Button 1 Clicked",
+                                            type: "publishText"
+                                        }]
+                                    },
+                                    title: "Async Button 1",
+                                    tooltip: "Async Button 1",
+                                    type: "button"
+                                }, {
+                                    click: {
+                                        actions: [{
+                                            text: "Async Button 2 Clicked",
+                                            type: "publishText"
+                                        }]
+                                    },
+                                    title: "Async Button 2",
+                                    tooltip: "Async Button 2",
+                                    type: "button"
+                                }],
+                                type: "quickReplies"
+                            };
+
+                        if (options.data.content.quickReplies) {
+                            options.data.content.quickReplies = quickReplyExample;
+                        }
+                        options.data.content.text = "This welcome message text has been interfered with by an ASYNC hook."
+                        console.warn('option',options.data.content);
                         successCallback(options);
-                    }, 2000);
+
+                    }, 3000);
                 }
             });
         }
+
+        tagletLoaded();
+
     </script>
     
   </head>
@@ -38,8 +78,7 @@
         Testing <strong> ASYNC Web Tag Hooks</strong>!<br />
       </p>
       <p>
-        <i>To test</i>: click on the chat button. After approx 5 seconds, a new async welcome message will be seen in the messaging window.<br /><br />
-      </p>
+        <i>To test</i>: click on the chat button. After approx 5 seconds, a new async welcome message will be seen in the messaging window.
       <pre>
       //To overwrite you can use the following code in console and then click the engagement to test this hook.
         <code>
@@ -48,10 +87,54 @@
               callback: function (options, successCallback, errorCallback) {
                 // example asynchronous code
                 setTimeout(() => {
-                  options.data.content.text = "This welcome message text has been interfered with by a ASYNC hook.";
+                  options.data.content.text = "This welcome message text has been interfered with by an ASYNC hook.";
                   successCallback(options);
                 }, 5000);
               }
+            });
+        </code>
+      </pre>
+      <pre>
+        // Engagement on the right has Quick Replies setup which can be overwritten as follows:
+        <code>
+            lpTag.hooks.pushAsync({
+                name: "BEFORE_WELCOME_MESSAGE",
+                callback: function (options, successCallback, errorCallback) {
+                    setTimeout(() => {
+                        const quickReplyExample = {
+                                replies: [{
+                                    click: {
+                                        actions: [{
+                                            text: "Async Button 1 Clicked",
+                                            type: "publishText"
+                                        }]
+                                    },
+                                    title: "Async Button 1",
+                                    tooltip: "Async Button 1",
+                                    type: "button"
+                                }, {
+                                    click: {
+                                        actions: [{
+                                            text: "Async Button 2 Clicked",
+                                            type: "publishText"
+                                        }]
+                                    },
+                                    title: "Async Button 2",
+                                    tooltip: "Async Button 2",
+                                    type: "button"
+                                }],
+                                type: "quickReplies"
+                            };
+
+                        if (options.data.content.quickReplies) {
+                            options.data.content.quickReplies = quickReplyExample;
+                        }
+                        options.data.content.text = "This welcome message text has been interfered with by an ASYNC hook."
+                        console.warn('option',options.data.content);
+                        successCallback(options);
+
+                    }, 3000);
+                }
             });
         </code>
       </pre>
