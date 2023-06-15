@@ -12,25 +12,23 @@
     
     <!-- BEGIN LivePerson Web Tag Hook -->
     <script>
-    	// brand adds code to register a Web Tag hook
-			lpTag.hooks = lpTag.hooks || [];
-			lpTag.hooks.push({
-      	name: 'AFTER_GET_LINES',
-        callback: function (event) {
-        	// brand's custom code to customized message goes here; below is an example
-        	console.log("Web tag hook triggered for 'AFTER_GET_LINES' event");
-          // check if the welcome message in in the event data
-					const indexOfWelcomeMessage = event.data.lines.findIndex((element) => {
-						return element.isWelcomeMessage;
-					});
-          // if welcome message exists, modify it
-          if (indexOfWelcomeMessage !== -1) {
-            event.data.lines[indexOfWelcomeMessage].text = 'Customized/personizaed welcome message (edit Web Tag hook code to change message)';
-            console.log("Modified welcome message found during Web tag hook TO: '" + event.data.lines[indexOfWelcomeMessage].text) + '"';
+    	window.onload = (event) => {
+        // brand adds code to register a Web Tag hook
+        lpTag.hooks = lpTag.hooks || [];
+        lpTag.hooks.pushAsync({
+          name: "BEFORE_WELCOME_MESSAGE",
+          callback: function (options, successCallback, errorCallback) {
+            console.log("Web tag hook triggered for 'BEFORE_WELCOME_MESSAGE' event");
+            // example asynchronous code
+            setTimeout(() => {
+              // modify welcome message text
+              options.data.content.text = 'Customized/personizaed welcome message';
+              console.log("Modified welcome message found during Web tag hook TO: '" + options.data.content.text + '"');
+              successCallback(options);
+            }, 3000);
           }
-          return event;
-        }
-      });
+        });
+      };
     </script>
     
   </head>
