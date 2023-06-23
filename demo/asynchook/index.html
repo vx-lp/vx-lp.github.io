@@ -78,7 +78,7 @@
         Testing <strong> ASYNC Web Tag Hooks</strong>!<br />
       </p>
       <p>
-        <i>To test</i>: click on the chat button. After approx 5 seconds, a new async welcome message will be seen in the messaging window.
+        <i>To test</i>: click on the chat button. After approx 3 seconds, a new async welcome message will be seen in the messaging window.
       <pre>
       //To overwrite you can use the following code in console and then click the engagement to test this hook.
         <code>
@@ -89,54 +89,16 @@
                 setTimeout(() => {
                   options.data.content.text = "This welcome message text has been interfered with by an ASYNC hook.";
                   successCallback(options);
-                }, 5000);
+                }, 3000);
               }
             });
         </code>
       </pre>
       <pre>
-        // Engagement on the right has Quick Replies setup which can be overwritten as follows:
-        <code>
-            lpTag.hooks.pushAsync({
-                name: "BEFORE_WELCOME_MESSAGE",
-                callback: function (options, successCallback, errorCallback) {
-                    setTimeout(() => {
-                        const quickReplyExample = {
-                                replies: [{
-                                    click: {
-                                        actions: [{
-                                            text: "Async Button 1 Clicked",
-                                            type: "publishText"
-                                        }]
-                                    },
-                                    title: "Async Button 1",
-                                    tooltip: "Async Button 1",
-                                    type: "button"
-                                }, {
-                                    click: {
-                                        actions: [{
-                                            text: "Async Button 2 Clicked",
-                                            type: "publishText"
-                                        }]
-                                    },
-                                    title: "Async Button 2",
-                                    tooltip: "Async Button 2",
-                                    type: "button"
-                                }],
-                                type: "quickReplies"
-                            };
-
-                        if (options.data.content.quickReplies) {
-                            options.data.content.quickReplies = quickReplyExample;
-                        }
-                        options.data.content.text = "This welcome message text has been interfered with by an ASYNC hook."
-                        console.warn('option',options.data.content);
-                        successCallback(options);
-
-                    }, 3000);
-                }
-            });
-        </code>
+       //You can try following examples to add Structured Content into Welcome Message
+        <a target="_blank" href='https://github.com/vx-lp/vx-lp.github.io/tree/master/demo/asynchook/examples/single-date-picker.js'>1. DATE PICKER</a><a target="_blank" href='https://livepersoninc.github.io/json-pollock/editor/?gist=4b0185e34ef69542b4ad49e888f83081'>  (Modify Structured Content)</a>
+        <a target="_blank" href='https://github.com/vx-lp/vx-lp.github.io/tree/master/demo/asynchook/examples/card.js'>2. SAMPLE CARD </a><a target="_blank" href='https://livepersoninc.github.io/json-pollock/editor/?gist=53b8f335253e6ce18cd0ad9054bb1e8a'>  (Modify Structured Content)</a>
+        <a target="_blank" href='https://github.com/vx-lp/vx-lp.github.io/tree/master/demo/asynchook/examples/carousel.js'>3. SIMPLE CAROUSEL</a><a target="_blank" href='https://livepersoninc.github.io/json-pollock/editor/?gist=39eb140ee8e52e025c1c1b76e1b3ba14'>  (Modify Structured Content)</a>
       </pre>
       <p>
         <a href="https://vx-lp.github.io/demo/asynchook/" target="_blank">Deployed test page</a><br />
