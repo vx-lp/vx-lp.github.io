@@ -1,5 +1,6 @@
-lpTag.hooks.pushAsync({
+lpTag.hooks.push({
     name: "BEFORE_WELCOME_MESSAGE",
+    isAsync: true,
     callback: function (options, successCallback, errorCallback) {
         // example asynchronous code
         setTimeout(() => {
