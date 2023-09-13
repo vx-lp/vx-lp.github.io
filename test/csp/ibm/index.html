@@ -1,0 +1,59 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="user-scalable=0, width=device-width, initial-scale=1.0,  minimum-scale=1.0, maximum-scale=1.0">
+    <meta
+        http-equiv="Content-Security-Policy"
+        content=
+            "default-src 'self';
+            frame-src 'self' https://*.lpsnmedia.net https://consent.trustarc.com https://*.idp.liveperson.net https://*.msg.liveperson.net;
+            font-src 'self' https://1.www.s81c.com https://fonts.gstatic.com;
+            img-src 'self' https://ondeck.console.test.cloud.ibm.com https://dev.console.test.cloud.ibm.com https://test.cloud.ibm.com https://cloud.ibm.com https://cache.globalcatalog.test.cloud.ibm.com https://cache.globalcatalog.cloud.ibm.com https://continuous-delivery-broker.us-south.devops.cloud.ibm.com https://us-south.apprapp.cloud.ibm.com https://broker.us-south.databases.cloud.ibm.com https://hp-vs.prod-us.cloud.zaas.ibm.com https://broker.vpnaas.cloud.ibm.com https://*.lpsnmedia.net https://data-shield-service-broker.mybluemix.net https://broker.dns-svcs.cloud.ibm.com https://us-south.event-notifications.cloud.ibm.com https://resource-catalog.stage1.bluemix.net https://globalcatalog.test.cloud.ibm.com https://consent.trustarc.com https://ibm.com https://us-south.event-notifications.cloud.ibm.com;
+            script-src 'self' https://ondeck.console.test.cloud.ibm.com https://dev.console.test.cloud.ibm.com https://test.cloud.ibm.com https://*.liveperson.net https://*.lpsnmedia.net https://*.v.liveperson.net https://cdn.segment.com https://cdn.walkme.com https://consent.trustarc.com https://consent.truste.com https://s.go-mpulse.net https://tags.tiqcdn.com 'nonce-2b69634d55702be15f661142f505b6e7';
+            style-src 'self' https://*.liveperson.net https://*.lpsnmedia.net 'nonce-2b69634d55702be15f661142f505b6e7';
+            script-src-attr 'self' https://*.liveperson.net https://*.lpsnmedia.net;
+            media-src 'self' https://*.lpsnmedia.net;
+            connect-src 'self' https://17de4c18.akstat.io https://17de4c0d.akstat.io https://api.segment.io https://c.go-mpulse.net https://cdn.segment.com https://cdn.walkme.com https://ec.walkme.com https://papi.walkme.com wss://*.msg.liveperson.net https://*.liveperson.net https://debug-api.segment.com;
+            base-uri 'self';
+            form-action 'self';
+            frame-ancestors 'self';
+            object-src 'none';
+            upgrade-insecure-requests;"
+    >
+    <title>Liveperson Web Messaging / Content Security Policy (CSP) tester (for IBM)</title>
+    <script src="../main.js"></script>
+    <link rel="stylesheet" href="../main.css">
+</head>
+<body>
+    <h1>
+        Liveperson Web Messaging:<br />
+        Content Security Policy (CSP) tester (<i>for IBM</i>)
+    </h1>
+    
+    <h2>Settings:</h2>
+    <table class="table">
+        <tr><td><b>environment:</b></td><td><span id="environment"></span></td></tr>
+        <tr><td><b>account:</b></td><td><span id="account"></span></td></tr>
+    </table>
+    
+    <h2>Content Security Policy:</h2>
+    <code class="code-block">
+        <b>default-src</b> 'self';<br />
+        <b>frame-src</b> 'self' https://*.lpsnmedia.net https://consent.trustarc.com https://va.idp.liveperson.net https://va.msg.liveperson.net;<br />
+        <b>font-src</b> 'self' https://1.www.s81c.com https://fonts.gstatic.com;<br />
+        <b>img-src</b> 'self' https://ondeck.console.test.cloud.ibm.com https://dev.console.test.cloud.ibm.com https://test.cloud.ibm.com https://cloud.ibm.com https://cache.globalcatalog.test.cloud.ibm.com https://cache.globalcatalog.cloud.ibm.com https://continuous-delivery-broker.us-south.devops.cloud.ibm.com https://us-south.apprapp.cloud.ibm.com https://broker.us-south.databases.cloud.ibm.com https://hp-vs.prod-us.cloud.zaas.ibm.com https://broker.vpnaas.cloud.ibm.com https://*.lpsnmedia.net https://data-shield-service-broker.mybluemix.net https://broker.dns-svcs.cloud.ibm.com https://us-south.event-notifications.cloud.ibm.com https://resource-catalog.stage1.bluemix.net https://globalcatalog.test.cloud.ibm.com https://consent.trustarc.com https://ibm.com https://us-south.event-notifications.cloud.ibm.com;<br />
+        <b>script-src</b> 'self' https://ondeck.console.test.cloud.ibm.com https://dev.console.test.cloud.ibm.com https://test.cloud.ibm.com https://lptag.liveperson.net https://*.lpsnmedia.net https://va.v.liveperson.net https://cdn.segment.com https://cdn.walkme.com https://consent.trustarc.com https://consent.truste.com https://s.go-mpulse.net https://tags.tiqcdn.com 'nonce-2b69634d55702be15f661142f505b6e7';<br />
+        <b>style-src</b> 'self' https://lptag.liveperson.net https://*.lpsnmedia.net 'nonce-2b69634d55702be15f661142f505b6e7';<br />
+        <b>script-src-attr</b> 'self' https://lptag.liveperson.net https://*.lpsnmedia.net;<br />
+        <b>media-src</b> 'self' https://*.lpsnmedia.net;<br />
+        <b>connect-src</b> 'self' https://17de4c18.akstat.io https://17de4c0d.akstat.io https://api.segment.io https://c.go-mpulse.net https://cdn.segment.com https://cdn.walkme.com https://ec.walkme.com https://papi.walkme.com wss://*.msg.liveperson.net https://*.liveperson.net https://debug-api.segment.com;<br />
+        <b>base-uri</b> 'self';<br />
+        <b>form-action</b> 'self';<br />
+        <b>frame-ancestors</b> 'self';<br />
+        <b>object-src</b> 'none';<br />
+        <b>upgrade-insecure-requests</b>;<br />
+    </code>
+</body>
+</html>

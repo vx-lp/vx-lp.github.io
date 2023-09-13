@@ -1,0 +1,25 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    padding: 75px;
+}
+table, th, td {
+    border: 2px solid #dfdfdf;
+    border-spacing: 0px;
+}
+th, td {
+    padding: 10px;
+}
+.code-text {
+    padding: 3px;
+    border-radius: 1px;
+    background-color: #dfdfdf;
+}
+.code-block {
+    display: block;
+    padding: 25px;
+    border-radius: 5px;
+    background-color: #dfdfdf;
+    font-size: 16px;
+    line-height: 26px;
+}
