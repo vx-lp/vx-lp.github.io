@@ -32,8 +32,25 @@ body {
     border-collapse: collapse;
     border: 2px solid #ABABAB;
 }
+
 .account-info td {
     border: 2px solid #ABABAB;
     padding: 15px;
     font-size: 1.2rem;
+}
+
+.csp-form {
+    padding: 15px 0;
+    border: 1px solid #ABABAB;
+}
+
+.fields-wrapper {
+    height: 50vh;
+    overflow-y: scroll;
+    padding: 0 15px;
+    margin-bottom: 15px;
+}
+
+.buttons {
+    padding-left: 25px;
 }

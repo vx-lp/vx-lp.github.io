@@ -31,89 +31,93 @@
 </section>
 <section>
     <h2>CSP</h2>
-    <form name="csp">
-        <div class="form-field">
-            <label for="default-src">default-src</label>
-            <input name="default-src" id="default-src" value="'self'"/>
+    <form name="csp" class="csp-form">
+        <div class="fields-wrapper">
+            <div class="form-field">
+                <label for="default-src">default-src</label>
+                <input name="default-src" id="default-src" value="'self'"/>
+            </div>
+            <div class="form-field">
+                <label for="frame-src">frame-src</label>
+                <input type="text" name="frame-src" id="frame-src" value="'self' https://*.lpsnmedia.net https://consent.trustarc.com https://*.idp.liveperson.net https://*.msg.liveperson.net"/>
+            </div>
+            <div class="form-field">
+                <label for="font-src">default-src</label>
+                <input type="text" name="font-src" id="font-src" value="'self' https://1.www.s81c.com https://fonts.gstatic.com"/>
+            </div>
+            <div class="form-field">
+                <label for="img-src">img-src</label>
+                <input type="text" name="img-src" id="img-src" value="'self' https://ondeck.console.test.cloud.ibm.com https://dev.console.test.cloud.ibm.com https://test.cloud.ibm.com https://cloud.ibm.com https://cache.globalcatalog.test.cloud.ibm.com https://cache.globalcatalog.cloud.ibm.com https://continuous-delivery-broker.us-south.devops.cloud.ibm.com https://us-south.apprapp.cloud.ibm.com https://broker.us-south.databases.cloud.ibm.com https://hp-vs.prod-us.cloud.zaas.ibm.com https://broker.vpnaas.cloud.ibm.com https://*.lpsnmedia.net https://data-shield-service-broker.mybluemix.net https://broker.dns-svcs.cloud.ibm.com https://us-south.event-notifications.cloud.ibm.com https://resource-catalog.stage1.bluemix.net https://globalcatalog.test.cloud.ibm.com https://consent.trustarc.com https://ibm.com https://us-south.event-notifications.cloud.ibm.com"/>
+            </div>
+            <div class="form-field">
+                <label for="script-src">script-src</label>
+                <input type="text" name="script-src" id="script-src" value="'self' https://ondeck.console.test.cloud.ibm.com https://dev.console.test.cloud.ibm.com https://test.cloud.ibm.com https://*.liveperson.net https://*.lpsnmedia.net https://*.v.liveperson.net https://cdn.segment.com https://cdn.walkme.com https://consent.trustarc.com https://consent.truste.com https://s.go-mpulse.net https://tags.tiqcdn.com 'nonce-2b69634d55702be15f661142f505b6e7'"/>
+            </div>
+            <div class="form-field">
+                <label for="style-src">style-src</label>
+                <input type="text" name="style-src" id="style-src" value="'self' https://*.liveperson.net https://*.lpsnmedia.net 'nonce-2b69634d55702be15f661142f505b6e7'"/>
+            </div>
+            <div class="form-field">
+                <label for="media-src">media-src</label>
+                <input type="text" name="media-src" id="media-src" value="'self' https://*.lpsnmedia.net"/>
+            </div>
+            <div class="form-field">
+                <label for="connect-src">connect-src</label>
+                <input type="text" name="connect-src" id="connect-src" value="'self' https://17de4c18.akstat.io https://17de4c0d.akstat.io https://api.segment.io https://c.go-mpulse.net https://cdn.segment.com https://cdn.walkme.com https://ec.walkme.com https://papi.walkme.com wss://*.msg.liveperson.net https://*.liveperson.net https://debug-api.segment.com"/>
+            </div>
+            <div class="form-field">
+                <label for="base-uri">base-uri</label>
+                <input type="text" name="base-uri" id="base-uri" value="'self'"/>
+            </div>
+            <div class="form-field">
+                <label for="form-action">form-action</label>
+                <input type="text" name="form-action" id="form-action" value="'self'"/>
+            </div>
+            <div class="form-field">
+                <label for="frame-ancestors">frame-ancestors</label>
+                <input type="text" name="frame-ancestors" id="frame-ancestors" value="'self'"/>
+            </div>
+            <div class="form-field">
+                <label for="object-src">object-src</label>
+                <input type="text" name="object-src" id="object-src" value="none"/>
+            </div>
+            <div class="form-field">
+                <label for="manifest-src">manifest-src</label>
+                <input type="text" name="manifest-src" id="manifest-src" value=""/>
+            </div>
+            <div class="form-field">
+                <label for="script-src-elem">script-src-elem</label>
+                <input type="text" name="script-src-elem" id="script-src-elem" value=""/>
+            </div>
+            <div class="form-field">
+                <label for="script-src-attr">script-src-attr</label>
+                <input type="text" name="script-src-attr" id="script-src-attr" value=""/>
+            </div>
+            <div class="form-field">
+                <label for="style-src-elem">style-src-elem</label>
+                <input type="text" name="style-src-elem" id="style-src-elem" value=""/>
+            </div>
+            <div class="form-field">
+                <label for="style-src-attr">style-src-attr</label>
+                <input type="text" name="style-src-attr" id="style-src-attr" value=""/>
+            </div>
+            <div class="form-field">
+                <label for="worker-src">worker-src</label>
+                <input type="text" name="worker-src" id="worker-src" value=""/>
+            </div>
+            <div class="form-field">
+                <label for="sandbox">sandbox</label>
+                <input type="text" name="sandbox" id="sandbox" value=""/>
+            </div>
+            <div class="form-field">
+                <label for="upgrade-insecure-requests">upgrade-insecure-requests</label>
+                <input type="text" name="upgrade-insecure-requests" id="upgrade-insecure-requests" value=""/>
+            </div>
         </div>
-        <div class="form-field">
-            <label for="frame-src">frame-src</label>
-            <input type="text" name="frame-src" id="frame-src" value="'self' https://*.lpsnmedia.net https://consent.trustarc.com https://*.idp.liveperson.net https://*.msg.liveperson.net"/>
+        <div class="buttons">
+            <button type="submit">Set CSP</button>
+            <button type="button" id="resetCSP">Reset</button>
         </div>
-        <div class="form-field">
-            <label for="font-src">default-src</label>
-            <input type="text" name="font-src" id="font-src" value="'self' https://1.www.s81c.com https://fonts.gstatic.com"/>
-        </div>
-        <div class="form-field">
-            <label for="img-src">img-src</label>
-            <input type="text" name="img-src" id="img-src" value="'self' https://ondeck.console.test.cloud.ibm.com https://dev.console.test.cloud.ibm.com https://test.cloud.ibm.com https://cloud.ibm.com https://cache.globalcatalog.test.cloud.ibm.com https://cache.globalcatalog.cloud.ibm.com https://continuous-delivery-broker.us-south.devops.cloud.ibm.com https://us-south.apprapp.cloud.ibm.com https://broker.us-south.databases.cloud.ibm.com https://hp-vs.prod-us.cloud.zaas.ibm.com https://broker.vpnaas.cloud.ibm.com https://*.lpsnmedia.net https://data-shield-service-broker.mybluemix.net https://broker.dns-svcs.cloud.ibm.com https://us-south.event-notifications.cloud.ibm.com https://resource-catalog.stage1.bluemix.net https://globalcatalog.test.cloud.ibm.com https://consent.trustarc.com https://ibm.com https://us-south.event-notifications.cloud.ibm.com"/>
-        </div>
-        <div class="form-field">
-            <label for="script-src">script-src</label>
-            <input type="text" name="script-src" id="script-src" value="'self' https://ondeck.console.test.cloud.ibm.com https://dev.console.test.cloud.ibm.com https://test.cloud.ibm.com https://*.liveperson.net https://*.lpsnmedia.net https://*.v.liveperson.net https://cdn.segment.com https://cdn.walkme.com https://consent.trustarc.com https://consent.truste.com https://s.go-mpulse.net https://tags.tiqcdn.com 'nonce-2b69634d55702be15f661142f505b6e7'"/>
-        </div>
-        <div class="form-field">
-            <label for="style-src">style-src</label>
-            <input type="text" name="style-src" id="style-src" value="'self' https://*.liveperson.net https://*.lpsnmedia.net 'nonce-2b69634d55702be15f661142f505b6e7'"/>
-        </div>
-        <div class="form-field">
-            <label for="media-src">media-src</label>
-            <input type="text" name="media-src" id="media-src" value="'self' https://*.lpsnmedia.net"/>
-        </div>
-        <div class="form-field">
-            <label for="connect-src">connect-src</label>
-            <input type="text" name="connect-src" id="connect-src" value="'self' https://17de4c18.akstat.io https://17de4c0d.akstat.io https://api.segment.io https://c.go-mpulse.net https://cdn.segment.com https://cdn.walkme.com https://ec.walkme.com https://papi.walkme.com wss://*.msg.liveperson.net https://*.liveperson.net https://debug-api.segment.com"/>
-        </div>
-        <div class="form-field">
-            <label for="base-uri">base-uri</label>
-            <input type="text" name="base-uri" id="base-uri" value="'self'"/>
-        </div>
-        <div class="form-field">
-            <label for="form-action">form-action</label>
-            <input type="text" name="form-action" id="form-action" value="'self'"/>
-        </div>
-        <div class="form-field">
-            <label for="frame-ancestors">frame-ancestors</label>
-            <input type="text" name="frame-ancestors" id="frame-ancestors" value="'self'"/>
-        </div>
-        <div class="form-field">
-            <label for="object-src">object-src</label>
-            <input type="text" name="object-src" id="object-src" value="none"/>
-        </div>
-        <div class="form-field">
-            <label for="manifest-src">manifest-src</label>
-            <input type="text" name="manifest-src" id="manifest-src" value=""/>
-        </div>
-        <div class="form-field">
-            <label for="script-src-elem">script-src-elem</label>
-            <input type="text" name="script-src-elem" id="script-src-elem" value=""/>
-        </div>
-        <div class="form-field">
-            <label for="script-src-attr">script-src-attr</label>
-            <input type="text" name="script-src-attr" id="script-src-attr" value=""/>
-        </div>
-        <div class="form-field">
-            <label for="style-src-elem">style-src-elem</label>
-            <input type="text" name="style-src-elem" id="style-src-elem" value=""/>
-        </div>
-        <div class="form-field">
-            <label for="style-src-attr">style-src-attr</label>
-            <input type="text" name="style-src-attr" id="style-src-attr" value=""/>
-        </div>
-        <div class="form-field">
-            <label for="worker-src">worker-src</label>
-            <input type="text" name="worker-src" id="worker-src" value=""/>
-        </div>
-        <div class="form-field">
-            <label for="sandbox">sandbox</label>
-            <input type="text" name="sandbox" id="sandbox" value=""/>
-        </div>
-        <div class="form-field">
-            <label for="upgrade-insecure-requests">upgrade-insecure-requests</label>
-            <input type="text" name="upgrade-insecure-requests" id="upgrade-insecure-requests" value=""/>
-        </div>
-        <button type="submit">Set CSP</button>
-        <button type="button" id="resetCSP">Reset</button>
     </form>
 </section>
 
