@@ -16,16 +16,24 @@
     };
 
     document.querySelector('#account').textContent = settings.account;
-    document.querySelector('#env').textContent = settings.env;
+    document.querySelector('#env').textContent = settings.environment;
 
     const form = document.forms.csp;
     const formValues = getCSPFromStorage();
-    const cspString = getCSPStringFromObj(formValues);
+    let cspData;
+    let cspString;
+    if (formValues) {
+        cspString = getCSPStringFromObj(formValues);
+    } else {
+        cspData = getCSPDataFromForm(form);
+        cspString = getCSPStringFromObj(cspData);
+    }
 
     setFormValues(formValues);
     setCspPolicy(cspString);
 
-    loadLPTag(settings.account, settings.env);
+    loadLPTag(settings.account, settings.environment);
+
     document.querySelector('#resetCSP').addEventListener('click', function (e) {
         e.preventDefault();
         form.reset();
