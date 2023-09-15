@@ -1,0 +1,39 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 15px;
+    font-size: 16px;
+}
+
+.form-field {
+    padding: 5px 0;
+}
+
+.form-field label {
+    display: inline-block;
+    padding: 5px;
+    width: 7vw;
+    text-align: right;
+}
+
+.form-field input {
+    display:inline-block;
+    border-radius: 3px;
+    padding: 5px;
+    border: 1px solid;
+    width: 89vw;
+    font-size: 1rem;
+}
+
+.account-info {
+    border-collapse: collapse;
+    border: 2px solid #ABABAB;
+}
+.account-info td {
+    border: 2px solid #ABABAB;
+    padding: 15px;
+    font-size: 1.2rem;
+}
