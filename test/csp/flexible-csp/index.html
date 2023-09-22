@@ -7,28 +7,41 @@
     <link rel="stylesheet" href="style/style.css" >
 </head>
 <body>
-<section>
-    <h2>Settings</h2>
-    <table class="account-info">
-        <tr>
-            <td>
-                Account:
-            </td>
-            <td id="account">
+<div class="combined-50">
+    <section class="settings-bar">
+        <h2>Settings</h2>
+        <table class="account-info">
+            <tr>
+                <td>
+                    Account:
+                </td>
+                <td id="account">
 
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Env:
-            </td>
-            <td id="env">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Env:
+                </td>
+                <td id="env">
 
-            </td>
-        </tr>
+                </td>
+            </tr>
 
-    </table>
-</section>
+        </table>
+    </section>
+    <section class="parsing-bar">
+        <h2>Parse CSP</h2>
+        <form name="rawCsp" id="raw-csp">
+            <div class="form-field">
+                <label for="csp-string">CSP string</label>
+                <textarea name="cspString" id="csp-string" placeholder="default-src 'self'; frame-src 'self' https://*.lpsnmedia.net https://consent.trustarc.com https://*.idp.liveperson.net https://*.msg.liveperson.net; font-src 'self' https://1.www.s81c.com https://fonts.gstatic.com;"></textarea>
+            </div>
+            <button type="submit">Parse CSP string</button>
+        </form>
+    </section>
+</div>
+
 <section>
     <h2>CSP</h2>
     <form name="csp" class="csp-form">
@@ -82,6 +95,10 @@
                 <input type="text" name="object-src" id="object-src" value="none"/>
             </div>
             <div class="form-field">
+                <label for="child-src">child-src</label>
+                <input type="text" name="child-src" id="child-src" value=""/>
+            </div>
+            <div class="form-field">
                 <label for="manifest-src">manifest-src</label>
                 <input type="text" name="manifest-src" id="manifest-src" value=""/>
             </div>
@@ -112,6 +129,10 @@
             <div class="form-field">
                 <label for="upgrade-insecure-requests">upgrade-insecure-requests</label>
                 <input type="text" name="upgrade-insecure-requests" id="upgrade-insecure-requests" value=""/>
+            </div>
+            <div class="form-field">
+                <label for="report-uri">report-uri</label>
+                <input type="text" name="report-uri" id="report-uri" value=""/>
             </div>
         </div>
         <div class="buttons">

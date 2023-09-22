@@ -18,6 +18,7 @@
     document.querySelector('#account').textContent = settings.account;
     document.querySelector('#env').textContent = settings.environment;
 
+    const parsingForm = document.forms.rawCsp;
     const form = document.forms.csp;
     const formValues = getCSPFromStorage();
     let cspData;
@@ -49,6 +50,19 @@
 
         localStorage.setItem(STORAGE_KEY, JSON.stringify(cspData));
         window.location.reload();
+    });
+
+    parsingForm.addEventListener('submit', function (e) {
+       e.preventDefault();
+       const formDataRaw = getCSPDataFromForm(e.target);
+       if (!formDataRaw.cspString || !formDataRaw.cspString.trim()) {
+           throw new Error('CSP string seems to be empty');
+       }
+       const cspData = convertRawCSPToObject(formDataRaw.cspString);
+       document.querySelectorAll('input').forEach(function (input) {
+           input.value = '';
+       })
+       setFormValues(cspData);
     });
 
     function setCspPolicy(cspString) {
@@ -121,5 +135,23 @@
             }
         }
         return queryParams;
+    }
+
+    function convertRawCSPToObject(raw) {
+        const cspProperties = raw.split(';');
+        const cspObj = {};
+        cspProperties.forEach((prop) => {
+            prop = prop.trim();
+            if (prop.length) {
+                const chunks = prop.split(' ');
+                const propName = chunks[0];
+                chunks.splice(0, 1);
+                const propValue = chunks.join(' ');
+                cspObj[propName] = propValue;
+            }
+        });
+
+        return cspObj;
+
     }
 })();
