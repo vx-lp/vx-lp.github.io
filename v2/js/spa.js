@@ -247,7 +247,7 @@
     function getAuthData (callback) {
         if (userName) {
             const authData = {
-                iss: 'https://vx-lp.github.io/lpwma/auth.html',
+                iss: 'LivePerson',
                 acr: 'loa1'
             }
             if (app.data.isSecureIdentity) {
