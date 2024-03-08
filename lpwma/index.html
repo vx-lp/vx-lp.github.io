@@ -90,5 +90,16 @@ window.lpTag=window.lpTag||{},"undefined"==typeof window.lpTag._tagCount?(window
 
 <script src="../script.js"></script>
 
+<script>
+    (function() {
+        const smtDebugParam = (new URLSearchParams(window.location.search)).get('smtDebug');
+        if (smtDebugParam === 'true') {
+            const script = document.createElement('script');
+            script.src = '../smtDebug.js';
+            document.head.appendChild(script);
+        }
+    })();
+</script>
+
 </body>
 </html>
