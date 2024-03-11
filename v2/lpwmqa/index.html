@@ -349,8 +349,8 @@
 
 <script>
     (function() {
-        const smtDebugParam = (new URLSearchParams(window.location.search)).get('smtDebug');
-        if (smtDebugParam === 'true') {
+        const smtDebugParam = (new URLSearchParams(window.location.search)).get('lpDebug');
+        if (smtDebugParam === '3') {
             const script = document.createElement('script');
             script.src = '../../smtDebug.js';
             document.head.appendChild(script);
