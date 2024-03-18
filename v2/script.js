@@ -3,12 +3,21 @@ const useAsyncIdentityCheckbox = $("#use-async-identity");
 const useSecureIdentityCheckbox = $("#use-secure-identity");
 const usernameInput = $("#lp_username");
 const accInput = $("#lp_account");
+const newPageBtn = $("#new-page-btn");
+let newPageCalled = false;
 let usernameResult;
 let identityFn;
 if (site) {
     accInput.val(site);
 }
-
+newPageBtn.on('click', function () {
+    if (newPageCalled) {
+        return;
+    }
+    newPageCalled = true;
+    newPageBtn.attr('disabled', true);
+    lpTag.newPage(window.location.href);
+});
 if (site && username) {
     usernameResult = 'lpTest' + username;
     usernameInput.val(username);
