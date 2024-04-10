@@ -13,19 +13,6 @@
     <link rel="stylesheet" href="../css/style.css">
 
     <script>
-        window.onload = function() {
-            var frame = document.createElement("iframe");
-            frame.src = "storage.html";
-            var style = frame.style;
-            style.width = "100%";
-            style.backgroundColor = "#dfdfdf";
-            style.height = "120px";
-            style.position = "fixed";
-            style.bottom = "0px";
-            style.left = "0px";
-            document.body.appendChild(frame);
-        }
-
         var env = "ALPHA";
 
         function getURLParams(search) {
@@ -121,7 +108,7 @@
             <input type="text" id="username-input" placeholder="Enter username">
             <label for="password-input">Password:</label>
             <input type="text" id="password-input" placeholder="Enter password">
-            <button type="button" onclick="location.href='index.html';">Sign-in</button>
+            <button type="button" onclick="location.href=frameOrigin+'/v2/uhc/index.html?site=53168229&lpDebug=2';">Sign-in</button>
         </form>
         <div id="displayField"></div>
     </div>
