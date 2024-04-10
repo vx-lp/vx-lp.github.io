@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="user-scalable=0, width=device-width, initial-scale=1.0,  minimum-scale=1.0, maximum-scale=1.0">
+    <title>Storage frame</title>
+
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <link rel="icon" href="../img/favicon.ico">
+    <script>
+        /*
+        var i = document.createElement("meta");
+        i.id = "lp-origin-trial";
+        i.httpEquiv = "origin-trial";
+        i.content = "AlAjVh59Sp/FzwEKmUUS6lafP6T+aVJatjpoKNwgjHaygZsOEfPihC6OtbEjT6h91S5Rmp7sRzWS0aW7a1daHQwAAABgeyJvcmlnaW4iOiJodHRwOi8vMTI3LjAuMC4xOjU1MDAiLCJmZWF0dXJlIjoiU3RvcmFnZUFjY2Vzc0FQSUJleW9uZENvb2tpZXMiLCJleHBpcnkiOjE3MjI5ODg3OTl9";
+        document.head.append(i);
+        */
+
+        function getURLParams(search) {
+            var queryParams = {}, queryArray, singleQuery;
+            queryArray = search.substr(1).split("&");
+            for (var i = 0; i < queryArray.length; i++) {
+                if (queryArray[i].indexOf("=") > -0) {
+                    singleQuery = queryArray[i].split("=");
+                    if (singleQuery.length == 2) {
+                        queryParams[decodeURIComponent(singleQuery[0])] = decodeURIComponent(singleQuery[1]);
+                    }
+                }
+            }
+            return queryParams;
+        }
+        
+        var params = getURLParams(window.location.search);
+
+        var origin = params.origin || "";
+    </script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #dfdfdf;
+            background-image: none;
+            font-size: 16px;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        img {
+           width: 75%; 
+        }
+        h2 {
+            color: #333;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            font-size: 16px;
+            background-color: #333;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        .label {
+            font-weight: bold;
+        }
+        #visitorId {
+            font-weight: bold;
+            color: darkolivegreen
+        }
+        #error {
+            font-weight: bold;
+            color: darkred
+        }
+    </style>
+</head>
+<body>
+    <p>
+        <button onclick="loadVisitorId()">Consent to read from storage</button>
+    </p>
+    <p>
+        <span class="label">Your Visitor ID:</span> <span id="visitorId"></span> <span id="error"></span>
+    </p>
+    <!--
+    <p>
+        <label for="newVisitorId" class="label">New Visitor ID:</label>
+        <input type="text" id="newVisitorId" placeholder="Enter new Visitor ID">
+        <button onclick="updateVisitorId()">Submit</button>
+    </p> 
+    -->
+
+    <script>
+        const COOKIE_NAME = "visitorId";
+
+        window.onload = async function() {
+            console.log("%c First attempt to access 3rd-party storage (calling hasStorageAccess)..", "color:orangered;");
+            const hasAccess = await document.hasStorageAccess();
+            if (hasAccess) {
+                console.log("%c Already have 3rd-party storage access! Displaying visitor ID..", "color:orangered;");
+                loadVisitorId();
+            } else {
+                console.log("%c Second attempt to access 3rd-party storage (calling navigator.permissions.query)..", "color:orangered;");
+                const permission = await navigator.permissions.query({ name: "storage-access" });
+                if (permission.state === "granted") {
+                    console.log("%c 3rd-party storage permission already granted - can load storage without user interaction (click)!", "color:green;");
+                    loadVisitorId();
+                } else if (permission.state === "prompt") {
+                    var message = "3rd-party storage access hasn't been granted yet; need to wait for user interaction (consent button click)";
+                    console.warn(message);
+                    displayError(message)
+                } else if (permission.state === "denied") {
+                    var message = "3rd-party storage access has been denied by user; nothing we can do.";
+                    console.warn(message);
+                    displayError(message)
+                }
+            }
+        };
+
+        async function loadVisitorId() {
+            requestCookieAccess()
+                .then(() => {
+                    var visitorId = null;
+                    var name = COOKIE_NAME + "=";
+                    var decodedCookie = decodeURIComponent(document.cookie);
+                    var cookieArray = decodedCookie.split(';');
+                    for(var i = 0; i < cookieArray.length; i++) {
+                        var cookie = cookieArray[i];
+                        while (cookie.charAt(0) == ' ') {
+                            cookie = cookie.substring(1);
+                        }
+                        if (cookie.indexOf(name) == 0) {
+                            visitorId = cookie.substring(name.length, cookie.length);
+                        }
+                    }
+                    sendVisitorIdToParentPage(visitorId);
+                    displayVisitorIdOnThisPage(visitorId);
+                });
+
+            /*
+            // use IndexedDB
+            openDB()
+                .then(() => {
+                    var transaction = db.transaction(["visitors"], "readonly");
+                    var objectStore = transaction.objectStore("visitors");
+                    var request = objectStore.get(1);
+
+                    request.onerror = function(event) {
+                        console.error("Error fetching visitor ID:", event.target.errorCode);
+                    };
+
+                    request.onsuccess = function(event) {
+                        var data = event.target.result;
+                        sendVisitorIdToParentPage((data && data.visitorId));
+                        displayVisitorIdOnThisPage((data && data.visitorId));
+                    };
+                });
+            */
+        }
+
+        async function sendVisitorIdToParentPage(id) {
+            window.parent.postMessage(id, origin);
+            console.log("%c " + COOKIE_NAME + " cookie with value of \"" + id + "\" was sent to parent page!", "color:green;");
+        }
+
+        async function displayVisitorIdOnThisPage(id) {
+            document.getElementById("visitorId").textContent = id || "(not set)";
+            clearError(null);
+            console.log("%c " + COOKIE_NAME + " cookie with value of \"" + id + "\" was displayed on this page!", "color:green;");
+        }
+
+        async function displayError(message) {
+            document.getElementById("error").textContent = message;
+        }
+
+        async function clearError() { displayError(); }
+
+        async function updateVisitorId() {
+            requestCookieAccess()
+                .then(async () => {
+                    var newVisitorId = document.getElementById("newVisitorId").value;
+                    if (!newVisitorId) {
+                        alert("Please enter a Visitor ID");
+                        return;
+                    }
+                    document.cookie = COOKIE_NAME + "=" + newVisitorId + ";path=/;secure;sameSite=none;";
+                    console.log("%c " + COOKIE_NAME + " cookie set with value of \"" + newVisitorId + "\" (attempt)!", "color:green;");
+                    await loadVisitorId();
+                });
+
+            // use IndexedDB
+            /*
+            openDB()
+                .then(() => {
+                    var newVisitorId = document.getElementById("newVisitorId").value;
+                    if (!newVisitorId) {
+                        alert("Please enter a Visitor ID");
+                        return;
+                    }
+
+                    var transaction = db.transaction(["visitors"], "readwrite");
+                    var objectStore = transaction.objectStore("visitors");
+
+                    var visitorData = { id: 1, visitorId: newVisitorId };
+                    var request = objectStore.put(visitorData);
+
+                    request.onerror = function(event) {
+                        console.error("Error updating visitor ID:", event.target.errorCode);
+                    };
+
+                    request.onsuccess = async function(event) {
+                        console.log("Visitor ID updated successfully");
+                        await loadVisitorId();
+                    };
+                });
+            */
+        }
+
+        function requestCookieAccess() {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    console.log("%c Attempt to access 3rd-party storage (calling requestStorageAccess)..", "color:orangered;");
+                    document.requestStorageAccess().then(
+                        () => {
+                            console.log("%c Access 3rd-party storage permission granted!", "color:green;");
+                            resolve();
+                        },
+                        () => {
+                            console.warn("3rd-party storage access has been denied by API; nothing we can do.");
+                            reject();
+                        },
+                    );
+                } catch (error) {
+                    console.error("requestStorageAccess error:", error.message);
+                    reject();
+                }
+            });  
+        }
+
+        var db;
+
+        function openDB() {
+            return new Promise(async (resolve, reject) => {
+                try {
+                    const handle = await document.requestStorageAccess({all: true});
+                    var request = handle.indexedDB.open("VisitorDB", 1);
+
+                    request.onerror = function(event) {
+                        console.error("IndexedDB error:", event.target.errorCode);
+                    };
+
+                    request.onsuccess = function(event) {
+                        db = event.target.result;
+                        resolve();
+                    };
+
+                    request.onupgradeneeded = function(event) {
+                        db = event.target.result;
+                        var objectStore = db.createObjectStore("visitors", { keyPath: "id" });
+                    };
+                } catch (error) {
+                    console.error("IndexedDB open error:", error.message);
+                    reject();
+                }
+            });        
+        }
+    </script>
+</body>
+</html>
