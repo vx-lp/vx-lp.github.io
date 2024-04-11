@@ -85,6 +85,9 @@
         .logo {
             width: 75%; 
         }
+        .sign-in-area {
+            border-right: 1px solid #dfdfdf;
+        }
         .sign-in-button {
             background-color: #ce4817;
         }
@@ -103,7 +106,7 @@
 <body>
     <div class="container">
         <div class="row">
-            <div class="col">
+            <div class="col sign-in-area">
                 <h1><img class="logo" src="https://member.uhc.com/myuhc/content/dam/myuhc/images/logo/MyUHC_Logo.svg" class="header__logo" alt="UnitedHealthCare Logo"></h1>
                 <div>
                     <h2>
@@ -116,9 +119,11 @@
                 <button type="button" class="sign-in-button" onclick="location.href='https://liveperson-web-experiences.netlify.app/v2/uhc/login.html?site=' + site + '&lpDebug=2';">Sign In</button>   
             </div>
             <div class="col">
-                <div id="LPVID" class="value-field"></div>
+                <b>Stored data</b> (<i>cookies</i>):
+                <div id="LPVID" class="value-field">Loading..</div>
                 <div id="LPSID" class="value-field"></div>
                 <div id="-unAuthJWT" class="value-field"></div>
+                <div id="-unAuthSub" class="value-field"></div>
                 <!--
                 <form id="visitorForm">
                     <label for="lpvid">Set new visitor ID:</label>
@@ -134,9 +139,10 @@
         const LPVID_KEY = "LPVID";
         const LPSID_KEY = "LPSID";
         const UNAUTH_JWT_KEY = "-unAuthJWT";
+        const UNAUTH_SUB_KEY = "-unAuthSub";
 
         window.onload = function() {
-            loadVisitor();
+            setInterval(() => { loadVisitor(); }, 3000);
         }
 
         async function loadVisitor() {
@@ -146,14 +152,19 @@
             var lpsid = getCookie(LPSID_KEY + "-" + site);
             document.getElementById(LPSID_KEY).innerHTML = `${LPSID_KEY}: <span class="value-text">${lpsid || "{not set}"}</span>`;
 
+            var unauthSub = getUnauthSub();
+            saveCookie(UNAUTH_SUB_KEY, unauthSub);
+            document.getElementById(UNAUTH_SUB_KEY).innerHTML = `${UNAUTH_SUB_KEY}: <span class="value-text">${unauthSub || "{not set}"}</span>`;
+
             var unauthJwt = await getUnauthJwt();
+            saveCookie(UNAUTH_JWT_KEY, unauthJwt);
             document.getElementById(UNAUTH_JWT_KEY).innerHTML = `${UNAUTH_JWT_KEY}: <span class="value-text">${unauthJwt || "{not set}"}</span>`;
         }
 
         function saveVisitor() {
             const lpvid = document.getElementById(LPVID_KEY).value;
             document.getElementById(LPVID_KEY).value = null;
-            saveCookie(LPVID_KEY, lpvid)
+            saveCookie(LPVID_KEY, lpvid);
             loadVisitor();
         }
 
@@ -172,6 +183,17 @@
                 }
             }
             return value;
+        }
+
+        function getUnauthSub() {
+            if (lpTag && lpTag.identities && lpTag.identities.safeIdentities) {
+                for (var identity of lpTag.identities.safeIdentities) {
+                    if (identity.iss == "LivePerson" && identity.acr == "0") {
+                        return identity.sub;
+                    }
+                }
+            }
+            return null;
         }
 
         async function getUnauthJwt() {
@@ -200,7 +222,9 @@
         }
 
         function saveCookie(name, value) {
-            document.cookie = `${name}=${value}; path=/; secure; samesite=none`;
+            if (name && value) {
+                document.cookie = `${name}=${value}; path=/; secure; samesite=none`;
+            }
         }
     </script>
 
