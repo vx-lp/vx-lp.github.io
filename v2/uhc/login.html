@@ -143,7 +143,9 @@
                 window.lpTag = window.lpTag || {};
                 lpTag.persistance = lpTag.persistance || {};
                 lpTag.persistance[key] = value;
-                saveCookie(key, value);
+                
+                var cookieName = (key == "LPSID" ? key + "-" + site : key);
+                saveCookie(cookieName, value);
 
                 if (key == "LOAD_TAG") {
                     loadLpTag();
