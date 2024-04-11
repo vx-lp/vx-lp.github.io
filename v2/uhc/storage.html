@@ -152,6 +152,8 @@
                     var unauthJwt = getCookie(UNAUTH_JWT_KEY);
                     sendDataToParentPage(UNAUTH_JWT_KEY, unauthJwt);
                     displayDataOnThisPage(UNAUTH_JWT_KEY, unauthJwt);
+
+                    sendDataToParentPage("LOAD_TAG", true);
                 });
         }
 
