@@ -58,7 +58,6 @@
             padding: 20px;
         }
         .container {
-            max-width: 400px;
             margin: 0 auto;
             background-color: #ffffff;
             border-radius: 8px;
@@ -92,10 +91,10 @@
         .visitor-button {
             background-color: #002677;
         }
-        #displayField {
+        .value-field {
             margin-top: 20px;
         }
-        .visitorIdText {
+        .value-text {
             color: darkgreen;
             font-weight: bold;
         }
@@ -103,34 +102,64 @@
 </head>
 <body>
     <div class="container">
-        <h1><img class="logo" src="https://member.uhc.com/myuhc/content/dam/myuhc/images/logo/MyUHC_Logo.svg" class="header__logo" alt="UnitedHealthCare Logo"></h1>
-        <div>
-            <h2>
-                Welcome back<br />
-                Let's get you signed in again
-            </h2>
-            Easy access to plan information anytime anywhere. Get the most out of your coverage.<br />
-            <br />
+        <div class="row">
+            <div class="col">
+                <h1><img class="logo" src="https://member.uhc.com/myuhc/content/dam/myuhc/images/logo/MyUHC_Logo.svg" class="header__logo" alt="UnitedHealthCare Logo"></h1>
+                <div>
+                    <h2>
+                        Welcome back<br />
+                        Let's get you signed in again
+                    </h2>
+                    Easy access to plan information anytime anywhere. Get the most out of your coverage.<br />
+                    <br />
+                </div>
+                <button type="button" class="sign-in-button" onclick="location.href='https://liveperson-web-experiences.netlify.app/v2/uhc/login.html?site=' + site + '&lpDebug=2';">Sign In</button>   
+            </div>
+            <div class="col">
+                <div id="LPVID" class="value-field"></div>
+                <div id="LPSID" class="value-field"></div>
+                <div id="-unAuthJWT" class="value-field"></div>
+                <!--
+                <form id="visitorForm">
+                    <label for="lpvid">Set new visitor ID:</label>
+                    <input type="text" id="lpvid" placeholder="Enter ID">
+                    <button type="button" class="visitor-button" onclick="saveVisitorId()">Save</button>
+                </form>
+                -->
+            </div>
         </div>
-        <button type="button" class="sign-in-button" onclick="location.href='https://liveperson-web-experiences.netlify.app/v2/uhc/login.html?site=53168229&lpDebug=2';">Sign In</button>   
-        <hr />
-        <div id="displayField"></div>
-        <form id="visitorForm">
-            <label for="visitorId">Set new visitor ID:</label>
-            <input type="text" id="visitorId" placeholder="Enter ID">
-            <button type="button" class="visitor-button" onclick="saveVisitorId()">Save</button>
-        </form>
     </div>
 
     <script>
+        const LPVID_KEY = "LPVID";
+        const LPSID_KEY = "LPSID";
+        const UNAUTH_JWT_KEY = "-unAuthJWT";
+
         window.onload = function() {
-            loadVisitorId();
+            loadVisitor();
         }
 
-        function loadVisitorId() {
-            // Get visitorId cookie value
-            var visitorId = null;
-            var name = "visitorId=";
+        async function loadVisitor() {
+            var lpvid = getCookie(LPVID_KEY);
+            document.getElementById(LPVID_KEY).innerHTML = `${LPVID_KEY}: <span class="value-text">${lpvid || "{not set}"}</span>`;
+
+            var lpsid = getCookie(LPSID_KEY + "-" + site);
+            document.getElementById(LPSID_KEY).innerHTML = `${LPSID_KEY}: <span class="value-text">${lpsid || "{not set}"}</span>`;
+
+            var unauthJwt = await getUnauthJwt();
+            document.getElementById(UNAUTH_JWT_KEY).innerHTML = `${UNAUTH_JWT_KEY}: <span class="value-text">${unauthJwt || "{not set}"}</span>`;
+        }
+
+        function saveVisitor() {
+            const lpvid = document.getElementById(LPVID_KEY).value;
+            document.getElementById(LPVID_KEY).value = null;
+            saveCookie(LPVID_KEY, lpvid)
+            loadVisitor();
+        }
+
+        function getCookie(name) {
+            var value = null;
+            name = name + "=";
             var decodedCookie = decodeURIComponent(document.cookie);
             var cookieArray = decodedCookie.split(';');
             for(var i = 0; i < cookieArray.length; i++) {
@@ -139,20 +168,39 @@
                     cookie = cookie.substring(1);
                 }
                 if (cookie.indexOf(name) == 0) {
-                    visitorId = cookie.substring(name.length, cookie.length);
+                    value = cookie.substring(name.length, cookie.length);
                 }
             }
-            // Display the current ID
-            document.getElementById("displayField").innerHTML = `Current unauthenticated visitor ID: <span class="visitorIdText">${visitorId || "{not set}"}</span>`;
+            return value;
         }
 
-        function saveVisitorId() {
-            const visitorId = document.getElementById("visitorId").value;
-            document.getElementById("visitorId").value = null;
-            // Save the value in a first-party cookie
-            document.cookie = `visitorId=${visitorId}; path=/; secure; samesite=none`;
-            // Display the current ID
-            loadVisitorId();
+        async function getUnauthJwt() {
+            return new Promise((resolve, reject) => {
+                if (lpTag && lpTag.taglets) {
+                    lpTag.taglets.lpSecureStorage.getValue({
+                        key: UNAUTH_JWT_KEY,
+                        site: site,
+                        app: "unAuthMessaging",
+                        success: (jwt) => { 
+                            console.log(jwt);
+                            resolve(jwt);
+                        },
+                        error: (err) => {
+                            console.log(err);
+                            reject();
+                        },
+                        appName: "unAuthMessaging",
+                        domain: 'https://' + lpTag.csds.getDomain('leCdnDomain'),
+                        firstParty: true
+                    });
+                } else {
+                    reject();
+                }
+            });
+        }
+
+        function saveCookie(name, value) {
+            document.cookie = `${name}=${value}; path=/; secure; samesite=none`;
         }
     </script>
 
