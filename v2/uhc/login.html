@@ -77,6 +77,11 @@
         .value-field {
             margin-top: 20px;
         }
+        .jwt-field {
+            max-width: 400px;
+            border: 1px solid #dfdfdf;
+            overflow-x: scroll;
+        }
         .value-text {
             color: darkgreen;
             font-weight: bold;
@@ -106,16 +111,23 @@
                 <div id="LPVID" class="value-field"></div>
                 <div id="LPSID" class="value-field"></div>
                 <div id="-unAuthSub" class="value-field"></div>
-                <div id="-unAuthJWT" class="value-field"></div>
+                <div id="-unAuthJWT" class="value-field jwt-field"></div>
             </div>
         </div>
     </div>
 
     <script>
 
+        const LPVID_KEY = "LPVID";
+        const LPSID_KEY = "LPSID";
+        const UNAUTH_JWT_KEY = "-unAuthJWT";
+        const UNAUTH_SUB_KEY = "-unAuthSub";
+
         var frameElement = null;
         var frameOrigin = 'https://vx-lp.github.io';
         //var frameOrigin = 'http://127.0.0.1:5501'; // local test iframe
+
+        var persistance = {};
 
         window.onload = function() {
             var frameName = 'lpFrame';
@@ -133,23 +145,21 @@
             frameElement = document.getElementById(frameName);
         }
 
-        window.addEventListener('message', function(event) {
+        window.addEventListener('message', async function(event) {
             if (event.origin === frameOrigin) {
                 var data = (event && event.data);
                 var key = (data && data.key);
                 var value = (data && data.value);
                 console.log("%c " + key + " with value of \"" + value + "\" was recieved from frame!", "color:green;");
                 
-                window.lpTag = window.lpTag || {};
-                lpTag.persistance = lpTag.persistance || {};
-                lpTag.persistance[key] = value;
-                
-                var cookieName = (key == "LPSID" ? key + "-" + site : key);
-                saveCookie(cookieName, value);
-
                 if (key == "LOAD_TAG") {
                     loadLpTag();
                 } else {
+                    persistance[key] = value;
+
+                    var cookieName = (key == LPSID_KEY ? key + "-" + site : key);
+                    saveCookie(cookieName, value);
+
                     document.getElementById(key).innerHTML = `${key}: <span class="value-text">${value || "{not set}"}</span>`;
                 }
             }
@@ -173,6 +183,7 @@
                 window.lpTag=window.lpTag||{},"undefined"==typeof window.lpTag._tagCount?(window.lpTag={site:site||"",section:lpTag.section||"",tagletSection:lpTag.tagletSection||null,autoStart:lpTag.autoStart!==!1,ovr:lpTag.ovr||{domain: 'lptag-a.liveperson.net', tagjsdomain: 'lptag-a.liveperson.net'},_v:"1.7.0",_tagCount:1,protocol:"https:",events:{bind:function(t,e,i){lpTag.defer(function(){lpTag.events.bind(t,e,i)},0)},trigger:function(t,e,i){lpTag.defer(function(){lpTag.events.trigger(t,e,i)},1)}},defer:function(t,e){0==e?(this._defB=this._defB||[],this._defB.push(t)):1==e?(this._defT=this._defT||[],this._defT.push(t)):(this._defL=this._defL||[],this._defL.push(t))},load:function(t,e,i){var n=this;setTimeout(function(){n._load(t,e,i)},0)},_load:function(t,e,i){var n=t;t||(n=this.protocol+"//"+(this.ovr&&this.ovr.domain?this.ovr.domain:"lptag.liveperson.net")+"/tag/tag.js?site="+this.site);var a=document.createElement("script");a.setAttribute("charset",e?e:"UTF-8"),i&&a.setAttribute("id",i),a.setAttribute("src",n),document.getElementsByTagName("head").item(0).appendChild(a)},init:function(){this._timing=this._timing||{},this._timing.start=(new Date).getTime();var t=this;window.attachEvent?window.attachEvent("onload",function(){t._domReady("domReady")}):(window.addEventListener("DOMContentLoaded",function(){t._domReady("contReady")},!1),window.addEventListener("load",function(){t._domReady("domReady")},!1)),"undefined"==typeof window._lptStop&&this.load()},start:function(){this.autoStart=!0},_domReady:function(t){this.isDom||(this.isDom=!0,this.events.trigger("LPT","DOM_READY",{t:t})),this._timing[t]=(new Date).getTime()},vars:lpTag.vars||[],dbs:lpTag.dbs||[],ctn:lpTag.ctn||[],sdes:lpTag.sdes||[],ev:lpTag.ev||[]},lpTag.init()):window.lpTag._tagCount+=1;
             }
             // END LivePerson Monitor.
+            lpTag.persistance = persistance;
         }
     </script>
 

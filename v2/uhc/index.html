@@ -97,6 +97,11 @@
         .value-field {
             margin-top: 20px;
         }
+        .jwt-field {
+            max-width: 400px;
+            border: 1px solid #dfdfdf;
+            overflow-x: scroll;
+        }
         .value-text {
             color: darkgreen;
             font-weight: bold;
@@ -122,8 +127,8 @@
                 <b>Stored data</b> (<i>cookies</i>):
                 <div id="LPVID" class="value-field">Loading..</div>
                 <div id="LPSID" class="value-field"></div>
-                <div id="-unAuthJWT" class="value-field"></div>
                 <div id="-unAuthSub" class="value-field"></div>
+                <div id="-unAuthJWT" class="value-field jwt-field"></div>
                 <!--
                 <form id="visitorForm">
                     <label for="lpvid">Set new visitor ID:</label>
