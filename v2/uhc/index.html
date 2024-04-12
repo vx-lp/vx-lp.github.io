@@ -157,13 +157,13 @@
             var lpsid = getCookie(LPSID_KEY + "-" + site);
             document.getElementById(LPSID_KEY).innerHTML = `${LPSID_KEY}: <span class="value-text">${lpsid || "{not set}"}</span>`;
 
-            var unauthSub = getUnauthSub();
-            saveCookie(UNAUTH_SUB_KEY, unauthSub);
-            document.getElementById(UNAUTH_SUB_KEY).innerHTML = `${UNAUTH_SUB_KEY}: <span class="value-text">${unauthSub || "{not set}"}</span>`;
-
             var unauthJwt = await getUnauthJwt();
             saveCookie(UNAUTH_JWT_KEY, unauthJwt);
             document.getElementById(UNAUTH_JWT_KEY).innerHTML = `${UNAUTH_JWT_KEY}: <span class="value-text">${unauthJwt || "{not set}"}</span>`;
+
+            var unauthSub = getUnauthSubFromJwt(unauthJwt);
+            saveCookie(UNAUTH_SUB_KEY, unauthSub);
+            document.getElementById(UNAUTH_SUB_KEY).innerHTML = `${UNAUTH_SUB_KEY}: <span class="value-text">${unauthSub || "{not set}"}</span>`;
         }
 
         function saveVisitor() {
@@ -190,15 +190,19 @@
             return value;
         }
 
-        function getUnauthSub() {
-            if (lpTag && lpTag.identities && lpTag.identities.safeIdentities) {
-                for (var identity of lpTag.identities.safeIdentities) {
-                    if (identity.iss == "LivePerson" && identity.acr == "0") {
-                        return identity.sub;
+        function getUnauthSubFromJwt(jwt) {
+            var payload = {};
+            if (jwt) {
+                const jwtParts = jwt.split('.');
+                if (jwtParts.length >= 2) {
+                    try {
+                        payload = JSON.parse(window.atob(jwtParts[1]));
+                    } catch (e) {
+                        console.log("error parsing jwt: " + e.message);
                     }
                 }
             }
-            return null;
+            return payload.sub;
         }
 
         async function getUnauthJwt() {
