@@ -1,6 +1,6 @@
 const environmentMap = {
     qa : {
-        tagDomain: 'lptag-dev.dev.lprnd.net',
+        tagDomain: 'lp-lptag-app.qa.int.gw.lpcloud.io',
     },
     alpha : {
         tagDomain : 'lptag-a.liveperson.net',

@@ -2,8 +2,8 @@
     /***************** CONSTANTS ******************/
     const ENV_URLS = {
         qa: {
-            domain: 'lptag-dev.dev.lprnd.net',
-            tagjs: 'lptag-dev.dev.lprnd.net'
+            domain: 'lp-lptag-app.qa.int.gw.lpcloud.io',
+            tagjs: 'lp-lptag-app.qa.int.gw.lpcloud.io'
         },
         alpha: {
             domain: 'lptag-a.liveperson.net',
