@@ -103,7 +103,7 @@
                     <input type="text" id="username-input" placeholder="Enter username">
                     <label for="password-input">Password:</label>
                     <input type="text" id="password-input" placeholder="Enter password">
-                    <button type="button" onclick="onSignInButtonClick">Sign-in (cross-domain)</button>
+                    <button type="button" onclick="location.href=frameOrigin+'/v2/uhc/index.html?site=53168229&lpDebug=2';">Sign-in</button>
                 </form>
             </div>
             <div class="col">
@@ -184,31 +184,6 @@
             }
             // END LivePerson Monitor.
             lpTag.persistance = persistance;
-        }
-
-        function onSignInButtonClick() {
-            var url = frameOrigin + '/v2/uhc/index.html?site=53168229&lpDebug=2';
-            location.href = getCrossDomainUrl(url);
-        }
-
-        function getCrossDomainUrl(url) {
-            try {
-                var urlObject = new URL(url);
-                var queryParams = {
-                    lpvid: lpTag.taglets.lp_monitoringSDK.getVid(),
-                    lpsid: lpTag.taglets.lp_monitoringSDK.getSid(),
-                    lpjwt: lpTag.taglets.unAuthMessaging.getJwt(),
-                    lpsub: lpTag.taglets.unAuthMessaging.getSub()
-                };
-                for (var key in queryParams) {
-                    if (queryParams.hasOwnProperty(key)) {
-                        urlObject.searchParams.set(key, queryParams[key]);
-                    }
-                  }
-                return urlObject.toString();
-            } catch (error) {
-                return url;
-            }
         }
     </script>
 
