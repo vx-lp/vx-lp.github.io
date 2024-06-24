@@ -103,7 +103,7 @@
                     <input type="text" id="username-input" placeholder="Enter username">
                     <label for="password-input">Password:</label>
                     <input type="text" id="password-input" placeholder="Enter password">
-                    <button type="button" onclick="location.href=frameOrigin+'/v2/uhc/index.html?site=53168229&lpDebug=2';">Sign-in</button>
+                    <button type="button" onclick="location.href=frameOrigin+'/v2/uhc/index.html?site=53168229&lpDebug=2';" disabled>Sign-in</button>
                 </form>
             </div>
             <div class="col">
@@ -135,9 +135,9 @@
             frame.id = frameName;
             frame.src = frameOrigin + "/v2/uhc/storage.html?origin=" + encodeURIComponent(window.location.href) + "&site=" + site;
             var style = frame.style;
-            style.width = "100%";
-            style.backgroundColor = "#dfdfdf";
-            style.height = "120px";
+            //style.width = "100%";
+            //style.backgroundColor = "#dfdfdf";
+            //style.height = "120px";
             style.position = "fixed";
             style.bottom = "0px";
             style.left = "0px";
@@ -152,16 +152,16 @@
                 var value = (data && data.value);
                 console.log("%c " + key + " with value of \"" + value + "\" was recieved from frame!", "color:green;");
                 
-                if (key == "LOAD_TAG") {
-                    loadLpTag();
-                } else {
+                //if (key == "LOAD_TAG") {
+                //    loadLpTag();
+                //} else {
                     persistance[key] = value;
 
                     var cookieName = (key == LPSID_KEY ? key + "-" + site : key);
                     saveCookie(cookieName, value);
 
                     document.getElementById(key).innerHTML = `${key}: <span class="value-text">${value || "{not set}"}</span>`;
-                }
+                //}
             }
         });
 
@@ -185,6 +185,8 @@
             // END LivePerson Monitor.
             lpTag.persistance = persistance;
         }
+
+        loadLpTag();
     </script>
 
     <script src="../js/bootstrap.min.js"></script>
