@@ -212,6 +212,46 @@
             }
         }
 
+        function getUnauthSubFromJwt(jwt) {
+            var payload = {};
+            if (jwt) {
+                const jwtParts = jwt.split('.');
+                if (jwtParts.length >= 2) {
+                    try {
+                        payload = JSON.parse(window.atob(jwtParts[1]));
+                    } catch (e) {
+                        console.log("error parsing jwt: " + e.message);
+                    }
+                }
+            }
+            return payload.sub;
+        }
+
+        async function getUnauthJwt() {
+            return new Promise((resolve, reject) => {
+                if (lpTag && lpTag.taglets) {
+                    lpTag.taglets.lpSecureStorage.getValue({
+                        key: UNAUTH_JWT_KEY,
+                        site: site,
+                        app: "unAuthMessaging",
+                        success: (jwt) => { 
+                            console.log(jwt);
+                            resolve(jwt);
+                        },
+                        error: (err) => {
+                            console.log(err);
+                            reject();
+                        },
+                        appName: "unAuthMessaging",
+                        domain: 'https://' + lpTag.csds.getDomain('leCdnDomain'),
+                        firstParty: true
+                    });
+                } else {
+                    reject();
+                }
+            });
+        }
+
         function loadLpTag() {
             // BEGIN LivePerson Monitor.
             if (isCdnTagJs) {
