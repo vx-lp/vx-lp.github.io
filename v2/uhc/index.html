@@ -121,7 +121,8 @@
                     Easy access to plan information anytime anywhere. Get the most out of your coverage.<br />
                     <br />
                 </div>
-                <button type="button" class="sign-in-button" onclick="onSignInButtonClick()">Sign In (cross-domain)</button>   
+                <button type="button" class="sign-in-button" onclick="onSignInButtonClick1()">Sign In (cross-domain URL query string)</button>
+                <button type="button" class="sign-in-button" onclick="onSignInButtonClick2()">Sign In (cross-domain URL fragment)</button>   
             </div>
             <div class="col">
                 <b>Stored data</b> (<i>cookies</i>):
@@ -158,11 +159,11 @@
             document.getElementById(LPSID_KEY).innerHTML = `${LPSID_KEY}: <span class="value-text">${lpsid || "{not set}"}</span>`;
 
             var unauthJwt = await getUnauthJwt();
-            saveCookie(UNAUTH_JWT_KEY, unauthJwt);
+            //saveCookie(UNAUTH_JWT_KEY, unauthJwt);
             document.getElementById(UNAUTH_JWT_KEY).innerHTML = `${UNAUTH_JWT_KEY}: <span class="value-text">${unauthJwt || "{not set}"}</span>`;
 
             var unauthSub = getUnauthSubFromJwt(unauthJwt);
-            saveCookie(UNAUTH_SUB_KEY, unauthSub);
+            //saveCookie(UNAUTH_SUB_KEY, unauthSub);
             document.getElementById(UNAUTH_SUB_KEY).innerHTML = `${UNAUTH_SUB_KEY}: <span class="value-text">${unauthSub || "{not set}"}</span>`;
         }
 
@@ -236,12 +237,17 @@
             }
         }
 
-        function onSignInButtonClick() {
+        function onSignInButtonClick1() {
             var url = 'https://liveperson-web-experiences.netlify.app/v2/uhc/login.html?site=' + site + '&lpDebug=2';
-            location.href = getCrossDomainUrl(url);
+            location.href = getCrossDomainUrlWithQueryString(url);
         }
 
-        function getCrossDomainUrl(url) {
+        function onSignInButtonClick2() {
+            var url = 'https://liveperson-web-experiences.netlify.app/v2/uhc/login.html?site=' + site + '&lpDebug=2';
+            location.href = getCrossDomainUrlWithFragment(url);
+        }
+
+        function getCrossDomainUrlWithQueryString(url) {
             try {
                 var urlObject = new URL(url);
                 var queryParams = {
@@ -255,6 +261,26 @@
                         urlObject.searchParams.set(key, queryParams[key]);
                     }
                   }
+                return urlObject.toString();
+            } catch (error) {
+                return url;
+            }
+        }
+
+        function getCrossDomainUrlWithFragment(url) {
+            try {
+                var urlObject = new URL(url);
+                var fragmentArray = [];
+                var fragmentObject = {
+                    lpvid: lpTag.taglets.lp_monitoringSDK.getVid(),
+                    lpsid: lpTag.taglets.lp_monitoringSDK.getSid(),
+                    lpjwt: lpTag.taglets.unAuthMessaging.getJwt(),
+                    lpsub: lpTag.taglets.unAuthMessaging.getSub()
+                };
+                for (var key in fragmentObject) {
+                    fragmentArray.push(key + '=' + fragmentObject[key]);
+                }
+                urlObject.hash = fragmentArray.join('&');
                 return urlObject.toString();
             } catch (error) {
                 return url;
