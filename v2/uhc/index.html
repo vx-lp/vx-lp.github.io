@@ -96,22 +96,23 @@
         }
         .value-field {
             margin-top: 20px;
+            font-weight: bold;
         }
         .jwt-field {
-            max-width: 400px;
-            border: 1px solid #dfdfdf;
-            overflow-x: scroll;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            word-break: normal;
         }
         .value-text {
-            color: darkgreen;
-            font-weight: bold;
+            color: darkolivegreen;
+            font-weight: normal;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="row">
-            <div class="col sign-in-area">
+            <div class="col-6 sign-in-area">
                 <h1><img class="logo" src="https://member.uhc.com/myuhc/content/dam/myuhc/images/logo/MyUHC_Logo.svg" class="header__logo" alt="UnitedHealthCare Logo"></h1>
                 <div>
                     <h2>
@@ -122,29 +123,23 @@
                     <br />
                 </div>
                 <div class="row">
+                    <!--
                     <div class="col">
                         <button type="button" class="sign-in-button" onclick="onSignInButtonClick1()">Sign In</button><br />
                         (cross-domain URL query string)
                     </div>
+                    -->
                     <div class="col">
                         <button type="button" class="sign-in-button" onclick="onSignInButtonClick2()">Sign In</button><br /> 
-                        (cross-domain URL fragment)
+                        <i style="color:gray;">(*via cross-domain URL)</i>
                     </div>
                 </div>
             </div>
-            <div class="col">
-                <b>Stored data</b> (<i>cookies</i>):
+            <div class="col-6">
                 <div id="LPVID" class="value-field">Loading..</div>
                 <div id="LPSID" class="value-field"></div>
-                <div id="-unAuthSub" class="value-field"></div>
                 <div id="-unAuthJWT" class="value-field jwt-field"></div>
-                <!--
-                <form id="visitorForm">
-                    <label for="lpvid">Set new visitor ID:</label>
-                    <input type="text" id="lpvid" placeholder="Enter ID">
-                    <button type="button" class="visitor-button" onclick="saveVisitorId()">Save</button>
-                </form>
-                -->
+                <div id="-unAuthSub" class="value-field"></div>
             </div>
         </div>
     </div>
@@ -161,25 +156,16 @@
 
         async function loadVisitor() {
             var lpvid = getCookie(LPVID_KEY);
-            document.getElementById(LPVID_KEY).innerHTML = `${LPVID_KEY}: <span class="value-text">${lpvid || "{not set}"}</span>`;
+            document.getElementById(LPVID_KEY).innerHTML = `${LPVID_KEY} (cookie): <span class="value-text">${lpvid || "{not set}"}</span>`;
 
             var lpsid = getCookie(LPSID_KEY + "-" + site);
-            document.getElementById(LPSID_KEY).innerHTML = `${LPSID_KEY}: <span class="value-text">${lpsid || "{not set}"}</span>`;
+            document.getElementById(LPSID_KEY).innerHTML = `${LPSID_KEY} (cookie): <span class="value-text">${lpsid || "{not set}"}</span>`;
 
             var unauthJwt = await getUnauthJwt();
-            //saveCookie(UNAUTH_JWT_KEY, unauthJwt);
-            document.getElementById(UNAUTH_JWT_KEY).innerHTML = `${UNAUTH_JWT_KEY}: <span class="value-text">${unauthJwt || "{not set}"}</span>`;
+            document.getElementById(UNAUTH_JWT_KEY).innerHTML = `unauth JWT (storage): <span class="value-text">${unauthJwt || "{not set}"}</span>`;
 
             var unauthSub = getUnauthSubFromJwt(unauthJwt);
-            //saveCookie(UNAUTH_SUB_KEY, unauthSub);
-            document.getElementById(UNAUTH_SUB_KEY).innerHTML = `${UNAUTH_SUB_KEY}: <span class="value-text">${unauthSub || "{not set}"}</span>`;
-        }
-
-        function saveVisitor() {
-            const lpvid = document.getElementById(LPVID_KEY).value;
-            document.getElementById(LPVID_KEY).value = null;
-            saveCookie(LPVID_KEY, lpvid);
-            loadVisitor();
+            document.getElementById(UNAUTH_SUB_KEY).innerHTML = `unauth sub (storage): <span class="value-text">${unauthSub || "{not set}"}</span>`;
         }
 
         function getCookie(name) {
@@ -237,12 +223,6 @@
                     reject();
                 }
             });
-        }
-
-        function saveCookie(name, value) {
-            if (name && value) {
-                document.cookie = `${name}=${value}; path=/; secure; samesite=none`;
-            }
         }
 
         function onSignInButtonClick1() {

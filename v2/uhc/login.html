@@ -31,6 +31,23 @@
         
         var params = getURLParams(window.location.search);
 
+        function getURLFragmentParams(url) {
+            try {
+                const urlObject = new URL(url);
+                const fragment = urlObject.hash.substring(1);
+                const params = new URLSearchParams(fragment);
+                const fragmentObject = {};
+                params.forEach(function(value, key) {
+                    fragmentObject[key] = value;
+                });
+                return fragmentObject;
+            } catch {
+                return {};
+            }
+        }
+
+        var fragmentParams = getURLFragmentParams(window.location.href);
+
         var site = params.site || "";
         var isCdnTagJs = params.cdn_tag_js === "true";
         var isCdnTaglets = params.cdn_taglets === "true";
@@ -76,22 +93,23 @@
         }
         .value-field {
             margin-top: 20px;
+            font-weight: bold;
         }
         .jwt-field {
-            max-width: 400px;
-            border: 1px solid #dfdfdf;
-            overflow-x: scroll;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+            word-break: normal;
         }
         .value-text {
-            color: darkgreen;
-            font-weight: bold;
+            color: darkolivegreen;
+            font-weight: normal;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="row">
-            <div class="col sign-in-area">
+            <div class="col-4 sign-in-area">
                 <h1><img class="logo" src="https://myoptum.optum.com/content/dam/hsid/HSID_Logo.png"  alt="Healthsafe Logo"></h1>
                 <div>
                     <h2>Secure, convenient sign in.</h2>
@@ -103,15 +121,28 @@
                     <input type="text" id="username-input" placeholder="Enter username">
                     <label for="password-input">Password:</label>
                     <input type="text" id="password-input" placeholder="Enter password">
-                    <button type="button" onclick="location.href=frameOrigin+'/v2/uhc/index.html?site=53168229&lpDebug=2';" disabled>Sign-in</button>
+                    <!--<button type="button" onclick="location.href=frameOrigin+'/v2/uhc/index.html?site=53168229&lpDebug=2';" disabled>Sign-in</button>-->
                 </form>
             </div>
-            <div class="col">
-                <b>Stored data</b> (<i>sent from iframe</i>):
+            <div class="col-8">
                 <div id="LPVID" class="value-field"></div>
                 <div id="LPSID" class="value-field"></div>
-                <div id="-unAuthSub" class="value-field"></div>
-                <div id="-unAuthJWT" class="value-field jwt-field"></div>
+                <div class="row">
+                    <div class="col-6">
+                        <div id="url-unauth-jwt" class="value-field jwt-field"></div>
+                    </div>
+                    <div class="col-6">
+                        <div id="current-unauth-jwt" class="value-field jwt-field"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div id="url-unauth-sub" class="value-field"></div>
+                    </div>
+                    <div class="col-6">
+                        <div id="current-unauth-sub" class="value-field"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -121,73 +152,38 @@
         const LPVID_KEY = "LPVID";
         const LPSID_KEY = "LPSID";
         const UNAUTH_JWT_KEY = "-unAuthJWT";
-        const UNAUTH_SUB_KEY = "-unAuthSub";
 
-        var frameElement = null;
+        const URL_UNAUTH_JWT_ID = "url-unauth-jwt";
+        const URL_UNAUTH_SUB_ID = "url-unauth-sub";
+        const CURRENT_UNAUTH_JWT_ID = "current-unauth-jwt";
+        const CURRENT_UNAUTH_SUB_ID = "current-unauth-sub";
+
         var frameOrigin = 'https://vx-lp.github.io';
         //var frameOrigin = 'http://127.0.0.1:5501'; // local test iframe
-
-        var persistance = {};
-
-        /*
-        window.onload = function() {
-            var frameName = 'lpFrame';
-            var frame = document.createElement("iframe");
-            frame.id = frameName;
-            frame.src = frameOrigin + "/v2/uhc/storage.html?origin=" + encodeURIComponent(window.location.href) + "&site=" + site;
-            var style = frame.style;
-            //style.width = "100%";
-            style.width = "0px";
-            //style.backgroundColor = "#dfdfdf";
-            //style.height = "120px";
-            style.height = "0px";
-            style.position = "fixed";
-            style.bottom = "0px";
-            style.left = "0px";
-            document.body.appendChild(frame);
-            frameElement = document.getElementById(frameName);
-        }
-        */
 
         window.onload = function() {
             setInterval(() => { loadVisitor(); }, 3000);
         }
 
-        async function loadVisitor() {
+        function loadVisitor() {
             var lpvid = getCookie(LPVID_KEY);
-            document.getElementById(LPVID_KEY).innerHTML = `${LPVID_KEY}: <span class="value-text">${lpvid || "{not set}"}</span>`;
+            document.getElementById(LPVID_KEY).innerHTML = `${LPVID_KEY} (cookie): <span class="value-text">${lpvid || "{not set}"}</span>`;
 
             var lpsid = getCookie(LPSID_KEY + "-" + site);
-            document.getElementById(LPSID_KEY).innerHTML = `${LPSID_KEY}: <span class="value-text">${lpsid || "{not set}"}</span>`;
+            document.getElementById(LPSID_KEY).innerHTML = `${LPSID_KEY} (cookie): <span class="value-text">${lpsid || "{not set}"}</span>`;
 
-            var unauthJwt = await getUnauthJwt();
-            document.getElementById(UNAUTH_JWT_KEY).innerHTML = `${UNAUTH_JWT_KEY}: <span class="value-text">${unauthJwt || "{not set}"}</span>`;
+            var urlUnauthJwt = getURLFragmentParams(window.location.href).lpjwt || getURLParams(window.location.search).lpjwt;
+            document.getElementById(URL_UNAUTH_JWT_ID).innerHTML = `URL <u>unauth JWT</u>: <span class="value-text">${ urlUnauthJwt || "{not set}"}</span>`;
 
-            var unauthSub = getUnauthSubFromJwt(unauthJwt);
-            document.getElementById(UNAUTH_SUB_KEY).innerHTML = `${UNAUTH_SUB_KEY}: <span class="value-text">${unauthSub || "{not set}"}</span>`;
+            var urlUnauthSub = getUnauthSubFromJwt(urlUnauthJwt);
+            document.getElementById(URL_UNAUTH_SUB_ID).innerHTML = `URL <u>unauth sub</u>: <span class="value-text">${urlUnauthSub || "{not set}"}</span>`;
+
+            var currentUnauthJwt = lpTag.taglets.unAuthMessaging.getJwt();
+            document.getElementById(CURRENT_UNAUTH_JWT_ID).innerHTML = `Current/stored <u>unauth JWT</u>: <span class="value-text">${currentUnauthJwt || "{not set}"}</span>`;
+
+            var currentUnauthSub = getUnauthSubFromJwt(currentUnauthJwt);
+            document.getElementById(CURRENT_UNAUTH_SUB_ID).innerHTML = `Current/stored <u>unauth sub</u>: <span class="value-text">${currentUnauthSub || "{not set}"}</span>`;
         }
-
-        /*
-        window.addEventListener('message', async function(event) {
-            if (event.origin === frameOrigin) {
-                var data = (event && event.data);
-                var key = (data && data.key);
-                var value = (data && data.value);
-                console.log("%c " + key + " with value of \"" + value + "\" was recieved from frame!", "color:green;");
-                
-                //if (key == "LOAD_TAG") {
-                //    loadLpTag();
-                //} else {
-                    persistance[key] = value;
-
-                    var cookieName = (key == LPSID_KEY ? key + "-" + site : key);
-                    saveCookie(cookieName, value);
-
-                    document.getElementById(key).innerHTML = `${key}: <span class="value-text">${value || "{not set}"}</span>`;
-                //}
-            }
-        });
-        */
 
         function getCookie(name) {
             var value = null;
@@ -206,12 +202,6 @@
             return value;
         }
 
-        function saveCookie(name, value) {
-            if (name && value) {
-                document.cookie = `${name}=${value}; path=/; secure; samesite=none`;
-            }
-        }
-
         function getUnauthSubFromJwt(jwt) {
             var payload = {};
             if (jwt) {
@@ -225,31 +215,6 @@
                 }
             }
             return payload.sub;
-        }
-
-        async function getUnauthJwt() {
-            return new Promise((resolve, reject) => {
-                if (lpTag && lpTag.taglets) {
-                    lpTag.taglets.lpSecureStorage.getValue({
-                        key: UNAUTH_JWT_KEY,
-                        site: site,
-                        app: "unAuthMessaging",
-                        success: (jwt) => { 
-                            console.log(jwt);
-                            resolve(jwt);
-                        },
-                        error: (err) => {
-                            console.log(err);
-                            reject();
-                        },
-                        appName: "unAuthMessaging",
-                        domain: 'https://' + lpTag.csds.getDomain('leCdnDomain'),
-                        firstParty: true
-                    });
-                } else {
-                    reject();
-                }
-            });
         }
 
         function loadLpTag() {
