@@ -121,8 +121,16 @@
                     Easy access to plan information anytime anywhere. Get the most out of your coverage.<br />
                     <br />
                 </div>
-                <button type="button" class="sign-in-button" onclick="onSignInButtonClick1()">Sign In (cross-domain URL query string)</button>
-                <button type="button" class="sign-in-button" onclick="onSignInButtonClick2()">Sign In (cross-domain URL fragment)</button>   
+                <div class="row">
+                    <div class="col">
+                        <button type="button" class="sign-in-button" onclick="onSignInButtonClick1()">Sign In</button>
+                        (cross-domain URL query string)
+                    </div>
+                    <div class="col">
+                        <button type="button" class="sign-in-button" onclick="onSignInButtonClick2()">Sign In</button>   
+                        (cross-domain URL fragment)
+                    </div>
+                </div>
             </div>
             <div class="col">
                 <b>Stored data</b> (<i>cookies</i>):
@@ -254,7 +262,7 @@
                     lpvid: lpTag.taglets.lp_monitoringSDK.getVid(),
                     lpsid: lpTag.taglets.lp_monitoringSDK.getSid(),
                     lpjwt: lpTag.taglets.unAuthMessaging.getJwt(),
-                    lpsub: lpTag.taglets.unAuthMessaging.getSub()
+                    //lpsub: lpTag.taglets.unAuthMessaging.getSub()
                 };
                 for (var key in queryParams) {
                     if (queryParams.hasOwnProperty(key)) {
@@ -275,7 +283,7 @@
                     lpvid: lpTag.taglets.lp_monitoringSDK.getVid(),
                     lpsid: lpTag.taglets.lp_monitoringSDK.getSid(),
                     lpjwt: lpTag.taglets.unAuthMessaging.getJwt(),
-                    lpsub: lpTag.taglets.unAuthMessaging.getSub()
+                    //lpsub: lpTag.taglets.unAuthMessaging.getSub()
                 };
                 for (var key in fragmentObject) {
                     fragmentArray.push(key + '=' + fragmentObject[key]);
