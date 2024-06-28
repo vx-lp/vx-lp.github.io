@@ -78,14 +78,12 @@
                     for (let i = 0; i < event.data.lines.length; i++) {
                         if (event.data.lines[i] &&
                             event.data.lines[i].text &&
-                            event.data.lines[i].text.elements &&
-                            event.data.lines[i].text.elements[0] &&
-                            event.data.lines[i].text.elements[0].click &&
-                            event.data.lines[i].text.elements[0].click.actions &&
-                            event.data.lines[i].text.elements[0].click.actions[0] &&
-                            event.data.lines[i].text.elements[0].click.actions[0].uri &&
-                            isValidURL(event.data.lines[i].text.elements[0].click.actions[0].uri)) {
-                            event.data.lines[i].text.elements[0].click.actions[0].uri = lpTag.getCrossDomainUrl(event.data.lines[i].text.elements[0].click.actions[0].uri);
+                            event.data.lines[i].text.click &&
+                            event.data.lines[i].text.click.actions &&
+                            event.data.lines[i].text.click.actions[0] &&
+                            event.data.lines[i].text.click.actions[0].uri &&
+                            isValidURL(event.data.lines[i].text.click.actions[0].uri)) {
+                            event.data.lines[i].text.click.actions[0].uri = lpTag.getCrossDomainUrl(event.data.lines[i].text.click.actions[0].uri);
                         }
                     }
                 }
