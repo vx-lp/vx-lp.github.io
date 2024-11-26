@@ -1,0 +1,366 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="user-scalable=0, width=device-width, initial-scale=1.0,  minimum-scale=1.0, maximum-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="connect-src self wss://*.msg.liveperson.net https://*.idp.liveperson.net;">
+    <title>Web Messaging</title>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+    <link rel="icon" href="../img/favicon.ico">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oswald&display=swap" rel="stylesheet">
+
+    <script>
+        var env = "ALPHA";
+
+        function getURLParams(search) {
+            var queryParams = {}, queryArray, singleQuery;
+            queryArray = search.substr(1).split("&");
+            for (var i = 0; i < queryArray.length; i++) {
+                if (queryArray[i].indexOf("=") > -0) {
+                    singleQuery = queryArray[i].split("=");
+                    if (singleQuery.length == 2) {
+                        queryParams[decodeURIComponent(singleQuery[0])] = decodeURIComponent(singleQuery[1]);
+                    }
+                }
+            }
+            return queryParams;
+        }
+        
+        var params = getURLParams(window.location.search);
+
+        var site = params.site || "";
+        var username = params.username || "";
+        var isAsyncIdentity = params.async_identity === "true";
+        var isSecureIdentity = params.secure_identity === "true";
+        var isCdnTagJs = params.cdn_tag_js === "true";
+        var isCdnTaglets = params.cdn_taglets === "true";
+
+        function copyToClipboard() {
+            /* Get the text field */
+            new ClipboardJS('.copy', {
+                container: document.getElementById('modal')
+            });
+        }
+
+    </script>
+
+    <!-- BEGIN LivePerson Monitor. -->
+    <script language="javascript">
+        if (isCdnTagJs) {
+            if (isCdnTaglets) {
+                window.lpTag=window.lpTag||{},"undefined"==typeof window.lpTag._tagCount?(window.lpTag={site:site||"",section:lpTag.section||"",tagletSection:lpTag.tagletSection||null,autoStart:lpTag.autoStart!==!1,ovr:lpTag.ovr||{domain: 'cdn-a.lpsnmedia.net', tagjsdomain: 'cdn-a.lpsnmedia.net'},_v:"1.10.0",_tagCount:1,protocol:"https:",events:{bind:function(t,e,i){lpTag.defer(function(){lpTag.events.bind(t,e,i)},0)},trigger:function(t,e,i){lpTag.defer(function(){lpTag.events.trigger(t,e,i)},1)}},defer:function(t,e){0==e?(this._defB=this._defB||[],this._defB.push(t)):1==e?(this._defT=this._defT||[],this._defT.push(t)):(this._defL=this._defL||[],this._defL.push(t))},load:function(t,e,i){var n=this;setTimeout(function(){n._load(t,e,i)},0)},_load:function(t,e,i){var n=t;t||(n=this.protocol+"//"+(this.ovr&&this.ovr.tagjsdomain?this.ovr.tagjsdomain:"cdn.lpsnmedia.net")+"/p/tag-js/latest/tag.js?site="+this.site);var a=document.createElement("script");a.setAttribute("charset",e?e:"UTF-8"),i&&a.setAttribute("id",i),a.setAttribute("src",n),document.getElementsByTagName("head").item(0).appendChild(a)},init:function(){this._timing=this._timing||{},this._timing.start=(new Date).getTime();var t=this;window.attachEvent?window.attachEvent("onload",function(){t._domReady("domReady")}):(window.addEventListener("DOMContentLoaded",function(){t._domReady("contReady")},!1),window.addEventListener("load",function(){t._domReady("domReady")},!1)),"undefined"==typeof window._lptStop&&this.load()},start:function(){this.autoStart=!0},_domReady:function(t){this.isDom||(this.isDom=!0,this.events.trigger("LPT","DOM_READY",{t:t})),this._timing[t]=(new Date).getTime()},vars:lpTag.vars||[],dbs:lpTag.dbs||[],ctn:lpTag.ctn||[],sdes:lpTag.sdes||[],ev:lpTag.ev||[]},lpTag.init()):window.lpTag._tagCount+=1;
+            } else {
+                window.lpTag=window.lpTag||{},"undefined"==typeof window.lpTag._tagCount?(window.lpTag={site:site||"",section:lpTag.section||"",tagletSection:lpTag.tagletSection||null,autoStart:lpTag.autoStart!==!1,ovr:lpTag.ovr||{domain: 'lptag-a.liveperson.net', tagjsdomain: 'cdn-a.lpsnmedia.net'},_v:"1.7.0",_tagCount:1,protocol:"https:",events:{bind:function(t,e,i){lpTag.defer(function(){lpTag.events.bind(t,e,i)},0)},trigger:function(t,e,i){lpTag.defer(function(){lpTag.events.trigger(t,e,i)},1)}},defer:function(t,e){0==e?(this._defB=this._defB||[],this._defB.push(t)):1==e?(this._defT=this._defT||[],this._defT.push(t)):(this._defL=this._defL||[],this._defL.push(t))},load:function(t,e,i){var n=this;setTimeout(function(){n._load(t,e,i)},0)},_load:function(t,e,i){var n=t;t||(n=this.protocol+"//"+(this.ovr&&this.ovr.tagjsdomain?this.ovr.tagjsdomain:"cdn.lpsnmedia.net")+"/p/tag-js/latest/tag.js?site="+this.site);var a=document.createElement("script");a.setAttribute("charset",e?e:"UTF-8"),i&&a.setAttribute("id",i),a.setAttribute("src",n),document.getElementsByTagName("head").item(0).appendChild(a)},init:function(){this._timing=this._timing||{},this._timing.start=(new Date).getTime();var t=this;window.attachEvent?window.attachEvent("onload",function(){t._domReady("domReady")}):(window.addEventListener("DOMContentLoaded",function(){t._domReady("contReady")},!1),window.addEventListener("load",function(){t._domReady("domReady")},!1)),"undefined"==typeof window._lptStop&&this.load()},start:function(){this.autoStart=!0},_domReady:function(t){this.isDom||(this.isDom=!0,this.events.trigger("LPT","DOM_READY",{t:t})),this._timing[t]=(new Date).getTime()},vars:lpTag.vars||[],dbs:lpTag.dbs||[],ctn:lpTag.ctn||[],sdes:lpTag.sdes||[],ev:lpTag.ev||[]},lpTag.init()):window.lpTag._tagCount+=1;
+            }
+        } else {
+            window.lpTag=window.lpTag||{},"undefined"==typeof window.lpTag._tagCount?(window.lpTag={site:site||"",section:lpTag.section||"",tagletSection:lpTag.tagletSection||null,autoStart:lpTag.autoStart!==!1,ovr:lpTag.ovr||{domain: 'lptag-a.liveperson.net', tagjsdomain: 'lptag-a.liveperson.net'},_v:"1.7.0",_tagCount:1,protocol:"https:",events:{bind:function(t,e,i){lpTag.defer(function(){lpTag.events.bind(t,e,i)},0)},trigger:function(t,e,i){lpTag.defer(function(){lpTag.events.trigger(t,e,i)},1)}},defer:function(t,e){0==e?(this._defB=this._defB||[],this._defB.push(t)):1==e?(this._defT=this._defT||[],this._defT.push(t)):(this._defL=this._defL||[],this._defL.push(t))},load:function(t,e,i){var n=this;setTimeout(function(){n._load(t,e,i)},0)},_load:function(t,e,i){var n=t;t||(n=this.protocol+"//"+(this.ovr&&this.ovr.domain?this.ovr.domain:"lptag.liveperson.net")+"/tag/tag.js?site="+this.site);var a=document.createElement("script");a.setAttribute("charset",e?e:"UTF-8"),i&&a.setAttribute("id",i),a.setAttribute("src",n),document.getElementsByTagName("head").item(0).appendChild(a)},init:function(){this._timing=this._timing||{},this._timing.start=(new Date).getTime();var t=this;window.attachEvent?window.attachEvent("onload",function(){t._domReady("domReady")}):(window.addEventListener("DOMContentLoaded",function(){t._domReady("contReady")},!1),window.addEventListener("load",function(){t._domReady("domReady")},!1)),"undefined"==typeof window._lptStop&&this.load()},start:function(){this.autoStart=!0},_domReady:function(t){this.isDom||(this.isDom=!0,this.events.trigger("LPT","DOM_READY",{t:t})),this._timing[t]=(new Date).getTime()},vars:lpTag.vars||[],dbs:lpTag.dbs||[],ctn:lpTag.ctn||[],sdes:lpTag.sdes||[],ev:lpTag.ev||[]},lpTag.init()):window.lpTag._tagCount+=1;
+        }
+    </script>
+    <!-- END LivePerson Monitor. -->
+</head>
+<body>
+
+
+<div class="container">
+    <div class="row" >
+        <div class="col-md-8" id="web-message-ex-top" >
+            <div id="web-message-ex">The Web Messaging Experience</div>
+            <a href="../shared-spa/spa.html?env=alpha" id="spa-redirect">
+                SPA page for login/logout testing
+                <svg aria-hidden="true" fill="none" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M14.8284 12L16.2426 13.4142L19.071 10.5858C20.6331 9.02365 20.6331 6.49099 19.071 4.9289C17.509 3.3668 14.9763 3.3668 13.4142 4.9289L10.5858 7.75732L12 9.17154L14.8284 6.34311C15.6095 5.56206 16.8758 5.56206 17.6568 6.34311C18.4379 7.12416 18.4379 8.39049 17.6568 9.17154L14.8284 12Z" fill="currentColor"/><path d="M12 14.8285L13.4142 16.2427L10.5858 19.0711C9.02372 20.6332 6.49106 20.6332 4.92896 19.0711C3.36686 17.509 3.36686 14.9764 4.92896 13.4143L7.75739 10.5858L9.1716 12L6.34317 14.8285C5.56212 15.6095 5.56212 16.8758 6.34317 17.6569C7.12422 18.4379 8.39055 18.4379 9.1716 17.6569L12 14.8285Z" fill="currentColor"/><path d="M14.8285 10.5857C15.219 10.1952 15.219 9.56199 14.8285 9.17147C14.4379 8.78094 13.8048 8.78094 13.4142 9.17147L9.1716 13.4141C8.78107 13.8046 8.78107 14.4378 9.1716 14.8283C9.56212 15.2188 10.1953 15.2188 10.5858 14.8283L14.8285 10.5857Z" fill="currentColor"/></svg>
+            </a>
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col-md-4" id="info-form">
+            <div id="lp-info">
+                <div><img id="window-icon" title="Web Messaging" src="../img/group-8.png" alt="Web Messaging"/></div>
+                <div><img id="window-preview" title="Web Messaging" src="../img/window-preview.png" alt="Web Messaging"/>
+                </div>
+                <div id="This-is-where-you-ar"> See how your messaging window will look on a website and make sure you're happy with it!
+                </div>
+                <div><img id="powered-by" title="Powered By LivePerson" src="../img/group-10.png" alt="Web Messaging"/>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4" id="lp-form">
+            <form id="lp_form">
+                <div class="row">
+                    <div class="col">
+                        <div>
+                            <b id="environment">Alpha Account </b>
+                            <br><input class="form-control" id="lp_account" placeholder=" enter your account info" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div>
+                            <b id="username">Username</b><br>
+                            <input class="form-control" id="lp_username" placeholder=" enter your username">
+                        </div>
+                    </div>
+                </div>
+                <div class="row hidden" id="identity-check-area">
+                    <div class="col">
+                        <label
+                                class="checkbox-label"
+                                for="use-async-identity"
+                                title="By checking this checkbox you change the behavior of auth identity function. It will return identity data with a 3 seconds delay. This simulates request to Brand's IDP"
+                        >Use async identity</label>
+                        <input
+                                class="checkbox-field"
+                                type="checkbox"
+                                id="use-async-identity"
+                                title="By checking this checkbox you change the behavior of auth identity function. It will return identity data with a 3 seconds delay. This simulates request to Brand's IDP"
+                        >
+                    </div>
+                    <div class="col">
+                        <label
+                                class="checkbox-label"
+                                for="use-secure-identity"
+                                title="When this checked the auth flow will use tkn and redirect_uri fields instead of sub field in the identity"
+                        >Use secure identity</label>
+                        <input
+                                class="checkbox-field"
+                                type="checkbox"
+                                id="use-secure-identity"
+                                title="When this checked the auth flow will use tkn and redirect_uri fields instead of sub field in the identity"
+                        >
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col" >
+                        <button class="btn-block" id="lp_btn_login" type="submit">UPDATE</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col" >
+                        <div id="log-version"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8" id="bottom-divider"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-8" id="account_setup">
+        <div class="row">
+            <div class="col">
+                <div class="lp_lnk_setup">
+                    <a data-toggle="modal" href="#" data-target="#modal" role="button">
+                        ACCOUNT SETUP <img class="expand" src="../img/icn-caret.png" alt="Account Setup"/>
+                    </a>
+                </div>
+            </div>
+            <div class="col">
+                <a class="lp_lnk_setup" data-toggle="modal" href="#" data-target="#qr-modal" role="button">
+                    QR CODE <img class="caret" src="../img/icn-caret.png" alt="QR Code"/>
+                </a>
+            </div>
+        </div>
+    </div>
+        <div class="col-md-4">
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8" id="embedded-engagement-header">
+            EMBEDDED ENGAGEMENT
+        </div>
+        <div class="col-md-8" id="embedded-engagement-footer">
+            <p>Configure an embedded engagement with the element ID <code>lp-embedded-engagement</code> to have it appear in the box below:</p>
+            <div id="lp-embedded-engagement"></div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog" role="document" >
+            <div class="modal-content modal-setup">
+                <div class="modal-header">
+                    <h5 class="modal-title">Account Setup</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-12 modal-description-text">
+                                The following configuration is the default in data sources authentication server
+                                configuration. It can be changed if needed.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8" >
+                                <b class="Authentication-Endpo">Authentication Endpoint:</b>
+                                <button type="button" class="btn btn-link copy" id="auth-copy" onClick="copyToClipboard()"
+                                        data-clipboard-text="https://vx-lp.github.io/lpwma/auth.html">COPY</button>
+                                <div class="Rectangle">
+                                    <p class="vw-lpgithub">
+                                        https://vx-lp.github.io/lpwma/auth.html
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <b class="Token-Endpoint">Token endpoint:</b>
+                                <button type="button" class="btn btn-link copy" onClick="copyToClipboard()"
+                                        data-clipboard-text="https://va-a.idp.liveperson.net/idp/public/authenticate">COPY</button><br/>
+                                <div class="Rectangle">
+                                    <p class="vw-idplivepe">https://va-a.idp.liveperson.net/idp/public/authenticate</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <b class="JS-method-name">JS method name:</b>
+                                <button type="button" class="btn btn-link copy" onClick="copyToClipboard()"
+                                        data-clipboard-text="LPJsMethodName">COPY</button><br/>
+                                <div class="Rectangle">
+                                    <p class="LPJsMethodName">LPJsMethodName</p><br/><br/>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <b class="JS-context">JS context:</b>
+                                <button type="button" class="btn btn-link copy" onClick="copyToClipboard()" data-clipboard-text="LPJsContext">COPY</button><br/>
+                                <div class="Rectangle">
+                                    <p class="LPJsContext">LPJsContext</p><br/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <b class="JWT">JWT public key:</b>
+                                <button type="button" class="btn btn-link copy" onClick="copyToClipboard()"
+                                        data-clipboard-text='MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvNDIU1yUm+8MF/IC1JmhOiuXHOt3hKmY1IYMfgEWlGhNhze3wrayhbMebJfFUesiy9q3tuzK/AbJyvO7xZK2XC9UC1kOWyqHPcNKh1uVPTkSrR/2j+sdeR0H8qVS+mIqS7nDjA+rrkuztzaUMmiqg/W35XG5jAsDhtfYiSTgjxEYKJYn94ec+RnYR8Gdt8il+GszlOSg2fuBjlSpG4YMM7TOSoq1VBn7GamU72lSN4w9kmw2GtTk9Q9g8niY1AqPKARbDZ/xS4RJEy4F/HUvRCvjtXUXDtzd1yzRxNbyX4/twSz0cqAW6nRjAyHdxT3kIowj3+qx5wlDltNH/6DhBwIDAQAB'>COPY</button><br>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12"  >
+                                <div id="Rectangle-pub">
+                                    <div  id="pub-key">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvNDIU1yUm+8MF/IC1JmhOiuXHOt3hKmY1IYMfgEWlGhNhze3wrayhbMebJfFUesiy9q3tuzK/AbJyvO7xZK2XC9UC1kOWyqHPcNKh1uVPTkSrR/2j+sdeR0H8qVS+mIqS7nDjA+rrkuztzaUMmiqg/W35XG5jAsDhtfYiSTgjxEYKJYn94ec+RnYR8Gdt8il+GszlOSg2fuBjlSpG4YMM7TOSoq1VBn7GamU72lSN4w9kmw2GtTk9Q9g8niY1AqPKARbDZ/xS4RJEy4F/HUvRCvjtXUXDtzd1yzRxNbyX4/twSz0cqAW6nRjAyHdxT3kIowj3+qx5wlDltNH/6DhBwIDAQAB</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="modal-footer">
+                            <a role="button" href="#" id="modal-close" data-dismiss="modal">
+                                CLOSE <img class="expand" src="../img/icn-caret-up.png" alt="Account Setup"/>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal fade" id="qr-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content modal-setup">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">QR Code</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-12 modal-description-text" >
+                                Scan QR code using mobile camera to open page in mobile browser.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3"></div>
+                            <div class="col-md-5"><img class="caret" src="../img/alpha-qr-code.png" alt="QR Code"/></div>
+                            <div class="col-md-3"></div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="modal-footer">
+                            <a role="button" href="#" class="modal-close" data-dismiss="modal">
+                                CLOSE <img class="expand" src="../img/icn-caret-up.png" alt="Account Setup"/>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<footer>
+
+</footer>
+
+<script>
+    $(window).on("load",function(){
+        if (site){
+            const console = {};
+
+            // Getting div to insert logs
+            const logger = document.getElementById("log-version");
+
+            // Adding log method from our console object
+            console.log = function(text)
+            {
+                const element = document.createElement("div");
+                const txt = document.createTextNode(text);
+
+                element.appendChild(txt);
+                logger.appendChild(element);
+            };
+
+            if(lpTag.taglets.lpUnifiedWindow){
+                console.log("uw: " + lpTag.taglets.lpUnifiedWindow.v);
+            }
+            if(lpTag.taglets.unAuthMessaging){
+                console.log("unauth: " + lpTag.taglets.unAuthMessaging.version);
+            }
+            if(lpTag.taglets.lpSecureStorage){
+                console.log("ss: " + lpTag.taglets.lpSecureStorage.v);
+            }
+            if(lpTag.taglets.rendererStub){
+                console.log("renderStub: " + lpTag.taglets.rendererStub._v);
+            }
+        }
+    });</script>
+
+<script src="../../v2/script.js"></script>
+
+<script>
+    (function() {
+        const smtDebugParam = (new URLSearchParams(window.location.search)).get('lpDebug');
+        if (smtDebugParam === '3') {
+            const script = document.createElement('script');
+            script.src = '../../smtDebug.js';
+            document.head.appendChild(script);
+        }
+    })();
+</script>
+
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+
+</body>
+</html>
