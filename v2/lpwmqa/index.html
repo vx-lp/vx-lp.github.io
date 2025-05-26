@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!--<meta name="viewport"-->
-          <!--content="user-scalable=0, width=device-width, initial-scale=1.0,  minimum-scale=1.0, maximum-scale=1.0">-->
+    <!--content="user-scalable=0, width=device-width, initial-scale=1.0,  minimum-scale=1.0, maximum-scale=1.0">-->
     <title>Web Messaging</title>
 
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
@@ -22,7 +22,7 @@
             var queryParams = {}, queryArray, singleQuery;
             queryArray = search.substr(1).split("&");
             for (var i = 0; i < queryArray.length; i++) {
-                if (queryArray[i].indexOf("=") > -0) {
+                if (queryArray[i].includes("=")) {
                     singleQuery = queryArray[i].split("=");
                     if (singleQuery.length == 2) {
                         queryParams[decodeURIComponent(singleQuery[0])] = decodeURIComponent(singleQuery[1]);
@@ -41,11 +41,16 @@
         var isCdnTagJs = params.cdn_tag_js === "true";
         var isGcpTaglets = params.gcp_taglets === "true";
 
-        function copyToClipboard() {
-            /* Get the text field */
-            new ClipboardJS('.copy', {
-                container: document.getElementById('modal')
-            });
+        function copyToClipboard(textToCopy) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(textToCopy)
+                    .then(() => {})
+                    .catch(err => {
+                        alert("Failed to copy. Please copy manually.");
+                    });
+            } else {
+                alert("Clipboard API not available. Please copy manually.");
+            }
         }
 
     </script>
@@ -140,7 +145,7 @@
                 </div>
                 <div class="row">
                     <div class="col" >
-                            <button class="btn-block" id="lp_btn_login" type="submit">UPDATE</button>
+                        <button class="btn-block" id="lp_btn_login" type="submit">UPDATE</button>
                     </div>
                 </div>
                 <div class="row">
@@ -190,84 +195,84 @@
          aria-hidden="true">
 
         <div class="modal-dialog" role="document" >
-                <div class="modal-content modal-setup">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Account Setup</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-lg-12 modal-description-text">
-                                    The following configuration is the default in data sources authentication server
-                                    configuration. It can be changed if needed.
+            <div class="modal-content modal-setup">
+                <div class="modal-header">
+                    <h5 class="modal-title">Account Setup</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-12 modal-description-text">
+                                The following configuration is the default in data sources authentication server
+                                configuration. It can be changed if needed.
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8" >
+                                <b class="Authentication-Endpo">Authentication Endpoint:</b>
+                                <button type="button" class="btn btn-link copy" id="auth-copy"
+                                        onClick="copyToClipboard('https://qtvr-wap11.dev.lprnd.net/oauth2/OAuth2.html')">COPY</button>
+                                <div class="Rectangle">
+                                    <p class="vw-lpgithub">
+                                        https://qtvr-wap11.dev.lprnd.net/oauth2/OAuth2.html
+                                    </p>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-8" >
-                                    <b class="Authentication-Endpo">Authentication Endpoint:</b>
-                                    <button type="button" class="btn btn-link copy" id="auth-copy" onClick="copyToClipboard()"
-                                            data-clipboard-text="https://qtvr-wap11.dev.lprnd.net/oauth2/OAuth2.html">COPY</button>
-                                    <div class="Rectangle">
-                                        <p class="vw-lpgithub">
-                                            https://qtvr-wap11.dev.lprnd.net/oauth2/OAuth2.html
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <b class="Token-Endpoint">Token endpoint:</b>
-                                    <button type="button" class="btn btn-link copy" onClick="copyToClipboard()"
-                                            data-clipboard-text="https://lp-idp-qa.dev.lprnd.net/test/authenticate">COPY</button><br/>
-                                    <div class="Rectangle">
-                                        <p class="vw-idplivepe">https://lp-idp-qa.dev.lprnd.net/test/authenticate</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <b class="JS-method-name">JS method name:</b>
-                                    <button type="button" class="btn btn-link copy" onClick="copyToClipboard()"
-                                            data-clipboard-text="LPJsMethodName">COPY</button><br/>
-                                    <div class="Rectangle">
-                                        <p class="LPJsMethodName">LPJsMethodName</p><br/><br/>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <b class="JS-context">JS context:</b>
-                                    <button type="button" class="btn btn-link copy" onClick="copyToClipboard()" data-clipboard-text="LPJsContext">COPY</button><br/>
-                                    <div class="Rectangle">
-                                        <p class="LPJsContext">LPJsContext</p><br/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <b class="JWT">JWT public key:</b>
-                                    <button type="button" class="btn btn-link copy" onClick="copyToClipboard()"
-                                            data-clipboard-text='MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCsJGVwx7NrGbXxL26Wb9CN/1kkHMc99xfQ19BQN+5PrwVYdKN0SgTkUD+rCNx4KA2A3IABAB7h5PMh2ZqmieGExfxuDarLk9klIzqjGuLv/asssPHh6prgI65ta1JAbFMy+KI6G582QWYjXXzExgOuIGXT2v8"eCQUJV0/yQixkdQIDAQAB'>COPY</button><br>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12"  >
-                                    <div id="Rectangle-pub">
-                                        <div  id="pub-key">MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCsJGVwx7NrGbXxL26Wb9CN/1kkHMc99xfQ19BQN+5PrwVYdKN0SgTkUD+rCNx4KA2A3IABAB7h5PMh2ZqmieGExfxuDarLk9klIzqjGuLv/asssPHh6prgI65ta1JAbFMy+KI6G582QWYjXXzExgOuIGXT2v8"eCQUJV0/yQixkdQIDAQAB</div>
-                                    </div>
+                            <div class="col-md-8">
+                                <b class="Token-Endpoint">Token endpoint:</b>
+                                <button type="button" class="btn btn-link copy"
+                                        onClick="copyToClipboard('https://lp-idp-qa.dev.lprnd.net/test/authenticate')">COPY</button><br/>
+                                <div class="Rectangle">
+                                    <p class="vw-idplivepe">https://lp-idp-qa.dev.lprnd.net/test/authenticate</p>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="modal-footer">
-                                <a role="button" href="#" class="modal-close" data-dismiss="modal">
-                                    CLOSE <img class="expand" src="../img/icn-caret-up.png" alt="Account Setup"/>
-                                </a>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <b class="JS-method-name">JS method name:</b>
+                                <button type="button" class="btn btn-link copy"
+                                        onClick="copyToClipboard('LPJsMethodName')">COPY</button><br/>
+                                <div class="Rectangle">
+                                    <p class="LPJsMethodName">LPJsMethodName</p><br/><br/>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <b class="JS-context">JS context:</b>
+                                <button type="button" class="btn btn-link copy" onClick="copyToClipboard('LPJsContext')">COPY</button><br/>
+                                <div class="Rectangle">
+                                    <p class="LPJsContext">LPJsContext</p><br/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <b class="JWT">JWT public key:</b>
+                                <button type="button" class="btn btn-link copy"
+                                        onClick="copyToClipboard('MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCsJGVwx7NrGbXxL26Wb9CN/1kkHMc99xfQ19BQN+5PrwVYdKN0SgTkUD+rCNx4KA2A3IABAB7h5PMh2ZqmieGExfxuDarLk9klIzqjGuLv/asssPHh6prgI65ta1JAbFMy+KI6G582QWYjXXzExgOuIGXT2v8\"eCQUJV0/yQixkdQIDAQAB')">COPY</button><br/>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12"  >
+                                <div id="Rectangle-pub">
+                                    <div  id="pub-key">MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCsJGVwx7NrGbXxL26Wb9CN/1kkHMc99xfQ19BQN+5PrwVYdKN0SgTkUD+rCNx4KA2A3IABAB7h5PMh2ZqmieGExfxuDarLk9klIzqjGuLv/asssPHh6prgI65ta1JAbFMy+KI6G582QWYjXXzExgOuIGXT2v8"eCQUJV0/yQixkdQIDAQAB</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="modal-footer">
+                            <a role="button" href="#" class="modal-close" data-dismiss="modal">
+                                CLOSE <img class="expand" src="../img/icn-caret-up.png" alt="Account Setup"/>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -315,36 +320,36 @@
 </footer>
 <script>
     $(window).on("load",function(){
-    if (site){
-        const console = {};
+        if (site){
+            const console = {};
 
-        // Getting div to insert logs
-        const logger = document.getElementById("log-version");
+            // Getting div to insert logs
+            const logger = document.getElementById("log-version");
 
-        // Adding log method from our console object
-        console.log = function(text)
-        {
-            const element = document.createElement("div");
-            const txt = document.createTextNode(text);
+            // Adding log method from our console object
+            console.log = function(text)
+            {
+                const element = document.createElement("div");
+                const txt = document.createTextNode(text);
 
-            element.appendChild(txt);
-            logger.appendChild(element);
-        };
+                element.appendChild(txt);
+                logger.appendChild(element);
+            };
 
-        if(lpTag.taglets.lpUnifiedWindow){
-            console.log("uw: " + lpTag.taglets.lpUnifiedWindow.v);
+            if(lpTag.taglets.lpUnifiedWindow){
+                console.log("uw: " + lpTag.taglets.lpUnifiedWindow.v);
+            }
+            if(lpTag.taglets.unAuthMessaging){
+                console.log("unauth: " + lpTag.taglets.unAuthMessaging.version);
+            }
+            if(lpTag.taglets.lpSecureStorage){
+                console.log("ss: " + lpTag.taglets.lpSecureStorage.v);
+            }
+            if(lpTag.taglets.rendererStub){
+                console.log("renderStub: " + lpTag.taglets.rendererStub._v);
+            }
         }
-        if(lpTag.taglets.unAuthMessaging){
-            console.log("unauth: " + lpTag.taglets.unAuthMessaging.version);
-        }
-        if(lpTag.taglets.lpSecureStorage){
-            console.log("ss: " + lpTag.taglets.lpSecureStorage.v);
-        }
-        if(lpTag.taglets.rendererStub){
-            console.log("renderStub: " + lpTag.taglets.rendererStub._v);
-        }
-    }
-});</script>
+    });</script>
 <script src="../../v2/script.js"></script>
 
 <script>
@@ -361,8 +366,6 @@
 <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="../js/bootstrap.min.js"></script>
-<script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
-
 
 </body>
 </html>
