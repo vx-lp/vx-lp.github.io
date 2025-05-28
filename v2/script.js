@@ -91,6 +91,38 @@ function updateQueryStringParameter(uri, key, value) {
     }
 }
 
+function copyToClipboard(textToCopy, clickedButton) {
+    if (!textToCopy) {
+        return;
+    }
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(textToCopy)
+            .then(() => {
+                if (clickedButton) {
+                    const originalText = clickedButton.innerText;
+                    clickedButton.innerText = 'COPIED!';
+                    setTimeout(() => {
+                        clickedButton.innerText = originalText;
+                    }, 1500);
+                }
+            })
+            .catch(err => {
+                alert("Failed to copy. Please copy manually.");
+            });
+    } else {
+        alert("Clipboard API not available. Please copy manually.");
+    }
+}
+
+
+document.querySelectorAll('.copy').forEach(function (button) {
+    button.addEventListener('click', function (event) {
+        const textAttribute = this.getAttribute('data-clipboard-text');
+        copyToClipboard(textAttribute, this);
+    });
+});
+
 
 $('#lp_lnk_setup').click(function () {
     var isDescriptionDisplay = $('#lp_account_setup_description').css('display') === 'block';

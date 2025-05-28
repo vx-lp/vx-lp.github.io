@@ -42,17 +42,17 @@
         var isCdnTagJs = params.cdn_tag_js === "true";
         var isGcpTaglets = params.gcp_taglets === "true";
 
-        function copyToClipboard(textToCopy) {
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(textToCopy)
-                    .then(() => {})
-                    .catch(err => {
-                        alert("Failed to copy. Please copy manually.");
-                    });
-            } else {
-                alert("Clipboard API not available. Please copy manually.");
-            }
-        }
+        // function copyToClipboard(textToCopy) {
+        //     if (navigator.clipboard && navigator.clipboard.writeText) {
+        //         navigator.clipboard.writeText(textToCopy)
+        //             .then(() => {})
+        //             .catch(err => {
+        //                 alert("Failed to copy. Please copy manually.");
+        //             });
+        //     } else {
+        //         alert("Clipboard API not available. Please copy manually.");
+        //     }
+        // }
 
     </script>
 
@@ -213,7 +213,7 @@
                         <div class="row">
                             <div class="col-md-8" >
                                 <b class="Authentication-Endpo">Authentication Endpoint:</b>
-                                <button type="button" class="btn btn-link copy" id="auth-copy" onClick="copyToClipboard()"
+                                <button type="button" class="btn btn-link copy" id="auth-copy"
                                         data-clipboard-text="https://vx-lp.github.io/lpwm/auth.html">COPY</button>
                                 <div class="Rectangle">
                                     <p class="vw-lpgithub">
@@ -223,7 +223,7 @@
                             </div>
                             <div class="col-md-8">
                                 <b class="Token-Endpoint">Token endpoint:</b>
-                                <button type="button" class="btn btn-link copy" onClick="copyToClipboard()"
+                                <button type="button" class="btn btn-link copy"
                                         data-clipboard-text="https://va.idp.liveperson.net/test/authenticate">COPY</button><br/>
                                 <div class="Rectangle">
                                     <p class="vw-idplivepe">https://va.idp.liveperson.net/test/authenticate</p>
@@ -233,7 +233,7 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <b class="JS-method-name">JS method name:</b>
-                                <button type="button" class="btn btn-link copy" onClick="copyToClipboard()"
+                                <button type="button" class="btn btn-link copy"
                                         data-clipboard-text="LPJsMethodName">COPY</button><br/>
                                 <div class="Rectangle">
                                     <p class="LPJsMethodName">LPJsMethodName</p><br/><br/>
@@ -241,7 +241,7 @@
                             </div>
                             <div class="col-md-8">
                                 <b class="JS-context">JS context:</b>
-                                <button type="button" class="btn btn-link copy" onClick="copyToClipboard()" data-clipboard-text="LPJsContext">COPY</button><br/>
+                                <button type="button" class="btn btn-link copy" data-clipboard-text="LPJsContext">COPY</button><br/>
                                 <div class="Rectangle">
                                     <p class="LPJsContext">LPJsContext</p><br/>
                                 </div>
@@ -250,8 +250,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <b class="JWT">JWT public key:</b>
-                                <button type="button" class="btn btn-link copy" onClick="copyToClipboard()"
-                                        data-clipboard-text='MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvGQctwBFFZBaSu+LC4LVk/4/XyVQmhcwM5a91lT7BwZug/GtpR+ZGpKkiZSgTehRdBJKSPjv5K6D8/cBm28OV11Mekjn1PJrveSXrRsfUbOqIHgpfVtnkxN3ZaV6GSWQrrZArkpbAm+Kf5o5jxFPhCadB8BdRGCbMI3rFEkYSFqnmptI3olIAtAjmtbLJnwYZyXl2WZXMBmORLXnV9aTMGp4uFZdX+QbK808q55zxSB5HM3N9B8NLUP1TELc6N2dhWk2RwR/C9WvQYH/UAnxqVEwrAXt+rb+YWuu92Dj4NLAmpEYbRQi+S+5Y6t5g6kX/QMQ/ycdFOW/WA3JoptUSQIDAQAB'>COPY</button><br>
+                                <button type="button" class="btn btn-link copy" data-clipboard-text='MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvGQctwBFFZBaSu+LC4LVk/4/XyVQmhcwM5a91lT7BwZug/GtpR+ZGpKkiZSgTehRdBJKSPjv5K6D8/cBm28OV11Mekjn1PJrveSXrRsfUbOqIHgpfVtnkxN3ZaV6GSWQrrZArkpbAm+Kf5o5jxFPhCadB8BdRGCbMI3rFEkYSFqnmptI3olIAtAjmtbLJnwYZyXl2WZXMBmORLXnV9aTMGp4uFZdX+QbK808q55zxSB5HM3N9B8NLUP1TELc6N2dhWk2RwR/C9WvQYH/UAnxqVEwrAXt+rb+YWuu92Dj4NLAmpEYbRQi+S+5Y6t5g6kX/QMQ/ycdFOW/WA3JoptUSQIDAQAB'>COPY</button><br>
                             </div>
                         </div>
                         <div class="row">
