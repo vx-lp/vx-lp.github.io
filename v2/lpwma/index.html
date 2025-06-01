@@ -21,7 +21,7 @@
             var queryParams = {}, queryArray, singleQuery;
             queryArray = search.substr(1).split("&");
             for (var i = 0; i < queryArray.length; i++) {
-                if (queryArray[i].indexOf("=") > -0) {
+                if (queryArray[i].includes("=")) {
                     singleQuery = queryArray[i].split("=");
                     if (singleQuery.length == 2) {
                         queryParams[decodeURIComponent(singleQuery[0])] = decodeURIComponent(singleQuery[1]);
@@ -30,7 +30,7 @@
             }
             return queryParams;
         }
-        
+
         var params = getURLParams(window.location.search);
 
         var site = params.site || "";
@@ -39,14 +39,6 @@
         var isSecureIdentity = params.secure_identity === "true";
         var isCdnTagJs = params.cdn_tag_js === "true";
         var isCdnTaglets = params.cdn_taglets === "true";
-
-        function copyToClipboard() {
-            /* Get the text field */
-            new ClipboardJS('.copy', {
-                container: document.getElementById('modal')
-            });
-        }
-
     </script>
 
     <!-- BEGIN LivePerson Monitor. -->
@@ -204,7 +196,7 @@
                         <div class="row">
                             <div class="col-md-8" >
                                 <b class="Authentication-Endpo">Authentication Endpoint:</b>
-                                <button type="button" class="btn btn-link copy" id="auth-copy" onClick="copyToClipboard()"
+                                <button type="button" class="btn btn-link copy" id="auth-copy"
                                         data-clipboard-text="https://vx-lp.github.io/lpwma/auth.html">COPY</button>
                                 <div class="Rectangle">
                                     <p class="vw-lpgithub">
@@ -214,7 +206,7 @@
                             </div>
                             <div class="col-md-8">
                                 <b class="Token-Endpoint">Token endpoint:</b>
-                                <button type="button" class="btn btn-link copy" onClick="copyToClipboard()"
+                                <button type="button" class="btn btn-link copy"
                                         data-clipboard-text="https://va-a.idp.liveperson.net/idp/public/authenticate">COPY</button><br/>
                                 <div class="Rectangle">
                                     <p class="vw-idplivepe">https://va-a.idp.liveperson.net/idp/public/authenticate</p>
@@ -224,7 +216,7 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <b class="JS-method-name">JS method name:</b>
-                                <button type="button" class="btn btn-link copy" onClick="copyToClipboard()"
+                                <button type="button" class="btn btn-link copy"
                                         data-clipboard-text="LPJsMethodName">COPY</button><br/>
                                 <div class="Rectangle">
                                     <p class="LPJsMethodName">LPJsMethodName</p><br/><br/>
@@ -232,7 +224,7 @@
                             </div>
                             <div class="col-md-8">
                                 <b class="JS-context">JS context:</b>
-                                <button type="button" class="btn btn-link copy" onClick="copyToClipboard()" data-clipboard-text="LPJsContext">COPY</button><br/>
+                                <button type="button" class="btn btn-link copy" data-clipboard-text="LPJsContext">COPY</button><br/>
                                 <div class="Rectangle">
                                     <p class="LPJsContext">LPJsContext</p><br/>
                                 </div>
@@ -241,7 +233,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <b class="JWT">JWT public key:</b>
-                                <button type="button" class="btn btn-link copy" onClick="copyToClipboard()"
+                                <button type="button" class="btn btn-link copy"
                                         data-clipboard-text='MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvNDIU1yUm+8MF/IC1JmhOiuXHOt3hKmY1IYMfgEWlGhNhze3wrayhbMebJfFUesiy9q3tuzK/AbJyvO7xZK2XC9UC1kOWyqHPcNKh1uVPTkSrR/2j+sdeR0H8qVS+mIqS7nDjA+rrkuztzaUMmiqg/W35XG5jAsDhtfYiSTgjxEYKJYn94ec+RnYR8Gdt8il+GszlOSg2fuBjlSpG4YMM7TOSoq1VBn7GamU72lSN4w9kmw2GtTk9Q9g8niY1AqPKARbDZ/xS4RJEy4F/HUvRCvjtXUXDtzd1yzRxNbyX4/twSz0cqAW6nRjAyHdxT3kIowj3+qx5wlDltNH/6DhBwIDAQAB'>COPY</button><br>
                             </div>
                         </div>
@@ -359,7 +351,6 @@
 <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="../js/bootstrap.min.js"></script>
-<!--<script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>-->
 
 </body>
 </html>
