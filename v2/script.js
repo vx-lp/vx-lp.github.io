@@ -14,7 +14,7 @@ if (site && username) {
     usernameInput.val(username);
     identityCheckArea.removeClass("hidden");
     let authData = {
-        iss: "LivePerson",
+        iss: "https://customerWebSite.com",
         acr: "loa1"
     };
     if (isSecureIdentity) {
