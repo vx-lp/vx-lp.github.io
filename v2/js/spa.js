@@ -247,7 +247,7 @@
     function getAuthData (callback) {
         if (userName) {
             const authData = {
-                iss: 'LivePerson',
+                iss: 'https://customerWebSite.com',
                 acr: 'loa1'
             }
             if (app.data.isSecureIdentity) {

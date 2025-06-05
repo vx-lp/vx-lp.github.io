@@ -31,7 +31,7 @@
             }
             return queryParams;
         }
-        
+
         var params = getURLParams(window.location.search);
 
         var site = params.site || "";
@@ -203,6 +203,16 @@
                             </div>
                         </div>
                         <div class="row">
+                            <div class="col-md-8" >
+                                <b class="Authentication-Endpo">Issuer:</b>
+                                <button type="button" class="btn btn-link copy" id="auth-copy"
+                                        data-clipboard-text="https://customerWebSite.com">COPY</button>
+                                <div class="Rectangle">
+                                    <p class="vw-lpgithub">
+                                        https://customerWebSite.com
+                                    </p>
+                                </div>
+                            </div>
                             <div class="col-md-8" >
                                 <b class="Authentication-Endpo">Authentication Endpoint:</b>
                                 <button type="button" class="btn btn-link copy" id="auth-copy" onClick="copyToClipboard()"
