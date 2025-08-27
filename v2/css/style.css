@@ -626,3 +626,39 @@ a {
 /*opacity: 0.5;*/
 /*}*/
 /*}*/
+
+/* ==========================================================================
+   ENVIRONMENT-SPECIFIC OVERRIDES
+   ========================================================================== */
+
+/* --- Alpha Page (Deep Indigo Theme) --- */
+.alpha-page #web-message-ex-top {
+    background-color: #6f42c1;
+}
+
+.alpha-page #lp_btn_login,
+.alpha-page #lp_btn_inject {
+    background-color: #6f42c1;
+}
+
+.alpha-page #account_setup,
+.alpha-page .modal-setup,
+.alpha-page #embedded-engagement-header {
+    background-image: linear-gradient(314deg, #2c1e3e, #4a2f6c, #6f42c1);
+}
+
+/* --- GA Page (Calm Green Theme) --- */
+.ga-page #web-message-ex-top {
+    background-color: #28a745;
+}
+
+.ga-page #lp_btn_login,
+.ga-page #lp_btn_inject {
+    background-color: #28a745;
+}
+
+.ga-page #account_setup,
+.ga-page .modal-setup,
+.ga-page #embedded-engagement-header {
+    background-image: linear-gradient(314deg, #5a8f7b, #6c757d, #28a745);
+}
