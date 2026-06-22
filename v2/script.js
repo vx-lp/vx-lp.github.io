@@ -44,12 +44,12 @@ if (site && username) {
     lpTag.sdes.push({"type": "ctmrinfo", "info": {customerId: usernameResult}});
 
     window.LPJsMethodName = function (callback) {
-        const authData = isSecureIdentity ? {ssoKey:usernameResult, redirect_uri: window.location.href} : usernameResult;
+        const authData = isSecureIdentity ? {ssoKey:usernameResult, redirect_uri: window.location.href} : username;
         callback(authData);
     };
 
     LPGetAuthenticationToken = function (callback) {
-        const authData = isSecureIdentity ? {ssoKey:usernameResult, redirect_uri: window.location.href} : usernameResult;
+        const authData = isSecureIdentity ? {ssoKey:usernameResult, redirect_uri: window.location.href} : username;
         callback(authData);
     }
 }
