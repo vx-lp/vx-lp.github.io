@@ -138,6 +138,56 @@ usernameInput.on('input', function (e) {
    }
 });
 
+// Taglets register on lpTag.taglets asynchronously after tag.js loads, which can be well after window "load",
+// so poll (bounded) instead of reading them once. Not every account loads every taglet, so stop on timeout.
+const TAGLET_VERSIONS = [
+    {name: 'lpUnifiedWindow', label: 'uw', prop: 'v'},
+    {name: 'unAuthMessaging', label: 'unauth', prop: 'version'},
+    {name: 'lpSecureStorage', label: 'ss', prop: 'v'},
+    {name: 'rendererStub', label: 'renderStub', prop: '_v'}
+];
+const TAGLET_VERSION_POLL_MS = 500;
+const TAGLET_VERSION_TIMEOUT_MS = 30000;
+
+function getTagletVersionLines(lpTagObj) {
+    const taglets = lpTagObj && lpTagObj.taglets;
+    if (!taglets) {
+        return [];
+    }
+    return TAGLET_VERSIONS
+        .filter(function (t) { return taglets[t.name] && taglets[t.name][t.prop]; })
+        .map(function (t) { return t.label + ": " + taglets[t.name][t.prop]; });
+}
+
+function renderTagletVersions(logger, lines) {
+    logger.textContent = '';
+    lines.forEach(function (line) {
+        const element = document.createElement("div");
+        element.textContent = line;
+        logger.appendChild(element);
+    });
+}
+
+function watchTagletVersions(logger) {
+    let renderedCount = -1;
+    const startedAt = Date.now();
+    (function poll() {
+        const lines = getTagletVersionLines(window.lpTag);
+        if (lines.length !== renderedCount) {
+            renderTagletVersions(logger, lines);
+            renderedCount = lines.length;
+        }
+        if (lines.length < TAGLET_VERSIONS.length && Date.now() - startedAt < TAGLET_VERSION_TIMEOUT_MS) {
+            setTimeout(poll, TAGLET_VERSION_POLL_MS);
+        }
+    })();
+}
+
+const tagletVersionLogger = document.getElementById("log-version");
+if (site && tagletVersionLogger) {
+    watchTagletVersions(tagletVersionLogger);
+}
+
 /*
      FILE ARCHIVED ON 19:07:52 Dec 05, 2018 AND RETRIEVED FROM THE
      INTERNET ARCHIVE ON 11:52:28 Feb 04, 2019.
